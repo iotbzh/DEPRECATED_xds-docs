@@ -15,7 +15,7 @@ DATE=$(grep  '"published":' $BOOKFILE | cut -d'"' -f 4)
 cat $(dirname $0)/cover.svg | sed -e "s/{title}/$TITLE/g" \
     -e "s/font-size:87.5px/font-size:54px/g" \
     -e "s/{subtitle}/$SUBTITLE/g" \
-    -e "s/font-size:62.5px/font-size:40px/g" \
+    -e "s/font-size:62.5px/font-size:54px/g" \
     -e "s/{version}/$VERSION/g" \
     -e "s/{date}/$DATE/g" \
     > /tmp/cover.svg
