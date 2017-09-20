@@ -31,15 +31,15 @@ git clone --recursive https://github.com/iotbzh/helloworld-native-application.gi
 Use XDS Dashboard to declare your project. Open a browser and connect to XDS
 Dashboard. URL depends of your config, for example `http://localhost:8000`
 
-Click cog icon ![](./pictures/xds-dashboard-icon-1.png){style display:inline; padding:0;}
+Click cog icon ![](./pictures/xds-dashboard-icon-1.png){:: style="display:inline; padding:0;"}
 to open configuration panel and then create/declare a new project by with the
 plus icon
-![](./pictures/xds-dashboard-icon-2.png){style display:inline; padding:0;}
+![](./pictures/xds-dashboard-icon-2.png){:: style="display:inline; padding:0;"}
 of `Projects` bar.
 
 Set `Sharing Type` and paths according to your setup.
 
-![](./pictures/xds-dashboard-prj-1.png){style width:90%;}
+![](./pictures/xds-dashboard-prj-1.png){:: style="width:90%;"}
 
 <!-- note -->
 >**Note:** when you select `Path mapping`, you must clone your project into
@@ -51,10 +51,10 @@ where you want on your local disk.
 
 ## Build from XDS dashboard
 
-Open the build page (icon ![](./pictures/xds-dashboard-icon-3.png){style display:inline; padding:0;}), then select your **Project** and the **Cross SDK** you want to use and click on
+Open the build page (icon ![](./pictures/xds-dashboard-icon-3.png){:: style="display:inline; padding:0;"}), then select your **Project** and the **Cross SDK** you want to use and click on
 **Clean / Pre-Build / Build / Populate** buttons to execute various build actions.
 
-![](./pictures/xds-dashboard-prj-2.png){style width:90%;}
+![](./pictures/xds-dashboard-prj-2.png){:: style="width:90%;"}
 
 ## Build from command line
 

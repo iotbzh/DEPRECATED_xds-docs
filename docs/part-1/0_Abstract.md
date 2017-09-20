@@ -13,7 +13,7 @@ keep performance while editing/browsing sources).
 The two main blocks that compose XDS are the client part (`xds-agent`) running
 on the user's machine and the server part (`xds-server`) running somewhere in a container or on a server machine (on local network or cloud).
 
-![](./pictures/xds-block-diagram.png){style width:98%;}
+![](./pictures/xds-block-diagram.png){:: style="width:98%;"}
 
 <!-- pagebreak -->
 
@@ -24,4 +24,4 @@ MacOS machine and the following 3 main configurations are supported:
 - On-Premise (local network)
 - SaaS (Cloud based)
 
-![](./pictures/xds-conf.png){style width:98%;}
+![](./pictures/xds-conf.png){:: style="width:98%;"}
