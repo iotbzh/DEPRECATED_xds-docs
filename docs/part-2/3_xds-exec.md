@@ -15,253 +15,70 @@ on your local host in order to use XDS.
 >  - [xds-server](https://github.com/iotbzh/xds-server), a web server
 used to remotely cross build applications.
 
-## Getting Started
+## Configuration
 
-You must have a running `xds-server` (locally or on the Cloud), see
-[README of xds-server](https://github.com/iotbzh/xds-server/blob/master/README.md)
-for more details.
+`xds-exec` configuration is defined either by environment variables or by
+setting command line options (see listed below).
 
-Connect your favorite Web browser to the XDS dashboard (default url
-http://localhost:8000) and follow instructions to start local `xds-agent` on
-your local host. Please refer to instructions provided by XDS dashboard or see
-`README of xds-agent`.
+Configuration through environment variables may also be defined in a file that
+will be sourced on `xds-exec` start-up. Use `--config|-c` option or set
+`XDS_CONFIG` environment variable to specify the config filename.
 
-Then create your project you XDS dashboard.
+<!-- note -->
+>**Note:** all parameters after a double dash (--) are considered as the command
+to execute on xds-server.
+<!-- endnote -->
 
-### Installing xds-exec
+### Configuration Options/Variables
 
-#### Install package for debian distro type
+`--id` option or `XDS_PROJECT_ID` env variable  **(mandatory)**
 
-```bash
-export DISTRO="Debian_8.0"
-wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
-sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list <<EOF
-deb http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/ ./
-EOF
-"
-sudo apt-get update
-sudo apt-get install agl-xds-exec
-```
+Project ID you want to build
 
-The value 'DISTRO' can be set to {Debian_8.0, Debian_9.0, xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04}
+`--config|-c` option or `XDS_CONFIG` env variable
 
-Update the package
+Env config file to source on startup
 
-```bash
-sudo apt-get update
-sudo apt-get upgrade agl-xds-exec
-```
+`--log|-l` option or `XDS_LOGLEVEL` env variable
 
-The files are install here:
+Logging level, supported levels are:
 
-```bash
-/opt/AGL/agl-xds-exec
-```
+* panic,
+* fatal,
+* error,
+* warn,
+* info,
+* debug
 
-#### Install package for rpm distro type
+Default level is "error".
 
-##### openSUSE
+`--rpath` option or `XDS_PATH` env variable
 
-```bash
-export DISTRO="openSUSE_Leap_42.2"
-sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
-sudo zypper ref
-sudo zypper install agl-xds-exec
-```
+Relative path into project
 
-The value 'DISTRO' can be set to {openSUSE_Leap_42.2, openSUSE_Leap_42.3, openSUSE_Tumbleweed}
+`sdkid` option or `XDS_SDK_ID` env variable  **(mandatory)**
 
-Update the package
+Cross Sdk ID to use to build project
 
-```bash
-sudo zypper ref
-sudo zypper install --force agl-xds-exec
-```
+`timestamp|-ts` option or `XDS_TIMESTAMP` env variable
 
-The files are install here:
+Prefix output with timestamp
 
-```bash
-/opt/AGL/agl-xds-exec
-```
+`url` option or `XDS_SERVER_URL` env variable
 
-### Using xds-exec from command line
-
-You need to determine which is the unique id of your project. You can find
-this ID in project page of XDS dashboard or you can get it from command line
-using the `--list` option. This option lists all existing projects ID:
-
-```bash
-./bin/xds-exec --list
-
-List of existing projects:
-  CKI7R47-UWNDQC3_myProject
-  CKI7R47-UWNDQC3_test2
-  CKI7R47-UWNDQC3_test3
-```
-
-Now to refer your project, just use --id option or use `XDS_PROJECT_ID`
-environment variable.
-
-You are now ready to use XDS to for example cross build your project.
-Here is an example to build a project based on CMakefile:
-
-```bash
-# Add xds-exec in the PATH
-export PATH=${PATH}:/opt/AGL/agl-xds-exec
-
-# Go into your project directory
-cd $MY_PROJECT_DIR
-
-# Create a build directory
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- mkdir build
-
-# Generate build system using cmake
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && cmake ..
-
-# Build the project
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && make all
-```
-
-To avoid to set project id, xds server url, ... at each command line, you can
-define these settings as environment variable within an env file and just set
-`--config` option or source file before executing xds-exec.
-
-For example, the equivalence of above command is:
-
-```bash
-cat > config.env << EOF
- export XDS_SERVER_URL=localhost:8000
- export XDS_PROJECT_ID=CKI7R47-UWNDQC3_myProject
- export XDS_SDK_ID=poky-agl_aarch64_4.0.1
-EOF
-
-xds-exec --config config.env -- mkdir build
-
-# Or sourcing env file
-source config.env
-xds-exec -- cd build && cmake ..
-xds-exec -- cd build && make all
-```
-
-### Using xds-exec within an IDE
-
-#### Visual Studio Code
-
-Open your project in VSC
-
-```bash
-cd $MY_PROJECT_DIR
-code . &
-```
-Add new tasks : press `Ctrl+Shift+P` and select the `Tasks: Configure Task Runner` command and you will see a list of task runner templates.
-
-And define your own tasks, here is an example to build [unicens2-binding](https://github.com/iotbzh/unicens2-binding) AGL binding based on cmake (_options value of args array must be updated regarding your settings_):
-
-```json
-{
-    "version": "0.1.0",
-    "linux": {
-        "command": "/opt/AGL/agl-xds-exec/xds-exec"
-    },
-    "isShellCommand": true,
-    "args": [
-        "-url", "localhost:8010",
-        "-id", "W2EAQBA-HQI75XA_unicens2-binding",
-        "-sdkid", "poky-agl_aarch64_4.0.1",
-        "--"
-    ],
-    "showOutput": "always",
-    "tasks": [{
-            "taskName": "clean",
-            "suppressTaskName": true,
-            "args": [
-                "rm -rf build/* && echo Cleanup done."
-            ]
-        },
-        {
-            "taskName": "pre-build",
-            "isBuildCommand": true,
-            "suppressTaskName": true,
-            "args": [
-                "mkdir -p build && cd build && cmake -DRSYNC_TARGET=root@192.168.168.11 -DRSYNC_PREFIX=./opt"
-            ]
-        },
-        {
-            "taskName": "build",
-            "isBuildCommand": true,
-            "suppressTaskName": true,
-            "args": [
-                "cd build && make widget"
-            ],
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": ["absolute"],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            }
-        },
-        {
-            "taskName": "populate",
-            "suppressTaskName": true,
-            "args" : [
-                "cd build && make widget-target-install"
-            ]
-        }
-    ]
-}
-```
-
-> **NOTE** You can also add your own keybindings to trig above tasks, for example:
-> ```json
-> // Build
-> {
->   "key": "alt+f9",
->   "command": "workbench.action.tasks.runTask",
->   "args": "clean"
-> },
-> {
->   "key": "alt+f10",
->   "command": "workbench.action.tasks.runTask",
->   "args": "pre-build"
-> },
-> {
->   "key": "alt+f11",
->   "command": "workbench.action.tasks.runTask",
->   "args": "build"
-> },
-> {
->   "key": "alt+f12",
->   "command": "workbench.action.tasks.runTask",
->   "args": "populate"
-> },
-> ```
->
-> More details about VSC keybindings [here](https://code.visualstudio.com/docs/editor/tasks#_binding-keyboard-shortcuts-to-tasks)
->
-> More details about VSC tasks [here](https://code.visualstudio.com/docs/editor/tasks)
-
-#### Qt Creator
-Please refer to [agl-hello-qml](https://github.com/radiosound-com/agl-hello-qml#clone--build-project) project.
-Thanks to Dennis for providing this useful example.
-
-#### Others IDE
-*Coming soon...*
-
+Remote XDS server url (default: "localhost:8000")
 
 ## How to build
 
 ### Prerequisites
+
  You must install and setup [Go](https://golang.org/doc/install) version 1.7 or
  higher to compile this tool.
 
 ### Building
+
 Clone this repo into your `$GOPATH/src/github.com/iotbzh` and use delivered Makefile:
+
 ```bash
  export GOPATH=$(realpath ~/workspace_go)
  mkdir -p $GOPATH/src/github.com/iotbzh
@@ -280,6 +97,7 @@ it may be useful use the same local sources.
 So you should replace `xds-server` in `vendor` directory by a symlink.
 So clone first `xds-server` sources next to `xds-exec` directory.
 You should have the following tree:
+
 ```
 > tree -L 3 src
 src
@@ -288,8 +106,10 @@ src
        |-- xds-exec
        |-- xds-server
 ```
+
 Then invoke `vendor/debug` Makefile rule to create a symlink inside vendor
 directory :
+
 ```bash
 cd src/github.com/iotbzh/xds-exec
 make vendor/debug

@@ -193,8 +193,7 @@ See also `xds-agent` [README file](https://github.com/iotbzh/xds-agent) for more
 
 ### Dependencies
 
-- Install and setup [Go](https://golang.org/doc/install) version 1.7 or
-higher to compile this tool.
+- Install and setup [Go](https://golang.org/doc/install) version 1.7 or higher to compile this tool.
 - Install [npm](https://www.npmjs.com/)
 - Install [gulp](http://gulpjs.com/)
 

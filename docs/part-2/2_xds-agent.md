@@ -9,68 +9,6 @@ machine or container (where `xds-server` is running).
 > **SEE ALSO**: [xds-server](https://github.com/iotbzh/xds-server), a web server
 used to remotely cross build applications.
 
-## How to install xds-agent
-
-### Install package for debian distro type
-
-```bash
-export DISTRO="Debian_8.0"
-wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
-sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list<<EOF
-deb http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/ ./
-EOF
-"
-sudo apt-get update
-sudo apt-get install agl-xds-agent
-```
-
-The value 'DISTRO' can be set to {Debian_8.0, Debian_9.0, xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04}
-
-Update the package
-
-```bash
-sudo apt-get update
-sudo apt-get upgrade agl-xds-agent
-```
-
-The files are install here:
-
-```bash
-/opt/AGL/agl-xds-agent
-```
-
-### Install package for rpm distro type
-
-#### openSUSE
-
-```bash
-export DISTRO="openSUSE_Leap_42.2"
-sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
-sudo zypper ref
-sudo zypper install agl-xds-agent
-```
-
-The value 'DISTRO' can be set to {openSUSE_Leap_42.2, openSUSE_Leap_42.3, openSUSE_Tumbleweed}
-
-Update the package
-
-```bash
-sudo zypper ref
-sudo zypper install --force agl-xds-agent
-```
-
-The files are install here:
-
-```bash
-/opt/AGL/agl-xds-agent
-```
-
-## How to install on other platform
-
-Download released tarballs from github [releases page](https://github.com/iotbzh/xds-agent/releases).
-
-Then unzip this tarball any where into your local disk (for example: /opt/AGL/xds or C:\AGL\xds).
-
 ## Configuration
 
 xds-agent configuration is driven by a JSON config file (named `agent-config.json`).
