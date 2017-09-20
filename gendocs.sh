@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTFILENAME="xds-UsersGuide"
+OUTFILENAME="XDS_UsersGuide"
 
 SCRIPT=$(basename $BASH_SOURCE)
 
@@ -63,7 +63,8 @@ if [ "$DO_ACTION" = "pdf" -o "$DO_ACTION" = "serve" ]; then
         # Update cover when book.json has been changed
         [[ $ROOTDIR/book.json -nt $ROOTDIR/docs/cover.jpg ]] && { echo "Update cover files"; $ROOTDIR/docs/resources/make_cover.sh || exit 1; }
 
-	    OUTFILE=$OUT_DIR/$OUTFILENAME.pdf
+        VERSION="_v$(grep  '"version":' $ROOTDIR/book.json | cut -d'"' -f 4)"
+	    OUTFILE=$OUT_DIR/$OUTFILENAME$VERSION.pdf
         $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG
         [ "$?" = "0" ] && echo "PDF has been successfully generated in $OUTFILE"
     else
