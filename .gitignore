@@ -1,0 +1,4 @@
+build/
+_book/
+node_modules/
+docs/cover*.jpg
