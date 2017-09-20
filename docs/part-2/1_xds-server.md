@@ -15,11 +15,6 @@ exposes a REST interface over HTTP and also provides a Web dashboard to configur
 `xds-server` uses [Syncthing](https://syncthing.net/) tool to synchronize
 projects files from user machine to build server machine or container.
 
-> **NOTE**: For now, only Syncthing sharing method is supported to synchronize
-projects files. But in a near future and for restricted configurations, `xds-server`
-will also support "standard" folder sharing (eg. nfs mount points or docker
-volumes).
-
 > **SEE ALSO**: [xds-exec](https://github.com/iotbzh/xds-exec),
 wrappers on `exec` commands that allows you to send commands to `xds-server`
 and for example build your application from command-line or from your favorite
@@ -79,6 +74,7 @@ This container (ID=0) exposes following ports:
 #### Manually setup docker user id
 
 If you plan to **use path-mapping sharing type for your projects**, you need to have the same user id and group id inside and outside docker. By default user and group name inside docker is set `devel` (id `1664`), use following commands to replace id `1664` with your user/group id:
+
 ```bash
 # Set docker container name to use (usually agl-xds-xxx where xxx is USERNAME@MACHINENAME-IDX-NAME)
 seb@laptop ~$ export CONTAINER_NAME=agl-xds-seb@laptop-0-seb
@@ -307,7 +303,7 @@ below corresponds to the default values):
 The server part is written in *Go* and web app / dashboard (client part) in
 *Angular2*.
 
-```
+```bash
 |
 +-- bin/                where xds-server binary file will be built
 |

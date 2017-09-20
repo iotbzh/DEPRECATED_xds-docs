@@ -292,8 +292,10 @@ And define your own tasks, here is an example to build [unicens2-binding](https:
 > More details about VSC tasks [here](https://code.visualstudio.com/docs/editor/tasks)
 
 #### Qt Creator
+
 Please refer to [agl-hello-qml](https://github.com/radiosound-com/agl-hello-qml#clone--build-project) project.
 Thanks to Dennis for providing this useful example.
 
 #### Others IDE
+
 *Coming soon...*

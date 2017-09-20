@@ -9,5 +9,13 @@
         // Search
         // Configure glob patterns for excluding files and folders in searches. Inherits all glob patterns from the files.exclude setting.
         "search.exclude": {
-        }
+        },
+
+        "cSpell.words": [
+            "zypper", "TFTP", "devel", "syncthing", "journalctl", "systemctl",
+            "vbox", "aarch", "crosssdk", "corei", "templating", "LOGLEVEL",
+            "LOGFILE", "RPATH", "DRSYNC", "usermod", "groupmod", "chown",
+            "MACHINENAME", "glibc", "DESTDIR", "realpath", "GOARCH", "sdkid",
+            "newtool", "setx"
+        ]
 }

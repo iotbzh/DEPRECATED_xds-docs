@@ -78,7 +78,7 @@ This container (ID=0) exposes following ports:
 - 69   : TFTP
 - 2222 : ssh
 
-This container also creates the following volumes (sharing directories between 
+This container also creates the following volumes (sharing directories between
 inside and outside docker):
 
 | Directory on host | Directory inside docker | Comment |
@@ -86,7 +86,6 @@ inside and outside docker):
 | $HOME/xds-workspace | /home/devel/xds-workspace | XDS projects workspace location|
 | $HOME/ssd/xdt_0 | /xdt | location to store SDKs |
 | $HOME/devel/docker/share |/home/devel/share | another shared directory |
-
 
 <!-- note -->
 Please refer to **part 2 - xds-server** documentation for additional info.
@@ -131,7 +130,9 @@ seb@laptop ~$  sudo zypper install agl-xds-server
 
 ### Configure xds-server
 
-_Optional step: nothing to do if you keep default settings_
+<!-- note -->
+>**Optional step**: nothing to do if you keep default settings
+<!-- endnote -->
 
 When `xds-server` is started as a systemd service, default environment variables
 are set into `/etc/default/xds-server` file.

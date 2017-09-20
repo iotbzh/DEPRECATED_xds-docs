@@ -36,9 +36,9 @@ wrappers on `exec` command that allows to cross build your application through `
 
  `XDS_CONFIG`
  Config file defining `XDS_xxx` configuration variables. Variables of this file
- will overwrite inherited environment variables. Variables definition may be 
- prefixed or not by "export" keyword.  
- Here is an example of 
+ will overwrite inherited environment variables. Variables definition may be
+ prefixed or not by "export" keyword.
+ Here is an example of configuration file
 
 ```bash
 # for example:
@@ -80,7 +80,7 @@ Remote XDS server url
 
 ### Configuration variables set within gdb init command file
 
-Above `XDS_xxx` variables may also be defined within gdb init command file 
+Above `XDS_xxx` variables may also be defined within gdb init command file
 (see --command or -x option of genuine Gdb).
 You must respect the following syntax: commented line including `:XDS-ENV:` tag
 

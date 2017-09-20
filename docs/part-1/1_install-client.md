@@ -50,7 +50,7 @@ seb@laptop ~$  sudo zypper install agl-xds-gdb
 
   1. Add binary to PATH:
     - MacOs: create the .bash_profile `nano .bash_profile` and add `export PATH="/opt/AGL/xds/xds-agent:$PATH`
-    - Windows: change the system path via control panel or system settings or 
+    - Windows: change the system path via control panel or system settings or
     `setx path "C:\AGK\xds\xds-agent;%path%"`
 
 - repeat the previous steps to install other tools depending of your needs:

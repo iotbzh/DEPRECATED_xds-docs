@@ -1,4 +1,4 @@
-# Part 1 - Getting Started for Users
+# Part 1 - Getting Started for Users
 
 ## Abstract
 

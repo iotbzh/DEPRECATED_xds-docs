@@ -9,12 +9,6 @@ This tool can be used in lieu of "standard" `exec` command to execute any
 command on a remote `xds-server`. For example you can trig your project build by
 executing : `xds-exec --config conf.env -- make build`
 
-> **SEE ALSO**:
->  - [xds-agent](https://github.com/iotbzh/xds-agent), an agent that should run
-on your local host in order to use XDS.
->  - [xds-server](https://github.com/iotbzh/xds-server), a web server
-used to remotely cross build applications.
-
 ## Configuration
 
 `xds-exec` configuration is defined either by environment variables or by
@@ -43,12 +37,12 @@ Env config file to source on startup
 
 Logging level, supported levels are:
 
-* panic,
-* fatal,
-* error,
-* warn,
-* info,
-* debug
+- panic,
+- fatal,
+- error,
+- warn,
+- info,
+- debug
 
 Default level is "error".
 
@@ -98,7 +92,7 @@ So you should replace `xds-server` in `vendor` directory by a symlink.
 So clone first `xds-server` sources next to `xds-exec` directory.
 You should have the following tree:
 
-```
+```bash
 > tree -L 3 src
 src
 |-- github.com
