@@ -3,12 +3,10 @@
 **X**(cross) **D**evelopment **S**ystem is a tool that allows user to easily
 cross build applications.
 
-The first goal is to provide a multi-platform cross development tool with
-near-zero installation.
-The second goal is to keep application sources locally (on user's machine) to
-make it compatible with existing IT policies (e.g. corporate backup or SCM),
-and let user to continue to work as usual (use his favorite editor,
-keep performance while editing/browsing sources).
+This documentation is available :
+
+- online: [http://docs.automotivelinux.org/docs/devguides/en/dev/#xcross-development-system-user's-guide](http://docs.automotivelinux.org/docs/devguides/en/dev/#xcross-development-system-user's-guide)
+- PDF file: [http://iot.bzh/download/public/2017/XDS/docs/XDS_UsersGuide.pdf](http://iot.bzh/download/public/2017/XDS/docs/XDS_UsersGuide.pdf)
 
 <br>
 <br>

@@ -1,4 +1,4 @@
-# Part 2 - XDS internals
+# XDS internals
 
 ## Abstract
 
