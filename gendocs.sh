@@ -32,18 +32,21 @@ DEBUG_FLAG=""
 DRY=""
 DO_ACTION=""
 OUT_DIR=./build
+ARGS=""
 
 [[ $? != 0 ]] && usage
 while [ $# -gt 0 ]; do
 	case "$1" in
-		--debug) DEBUG_FLAG="--log=debug --debug";;
-		-d|--dry) DRY=echo;;
-		-h|--help) usage;;
-        pdf | serve | doxygen) DO_ACTION=$1;;
-		--) break;;
+		--debug)                DEBUG_FLAG="--log=debug --debug";;
+		-d|--dry)               DRY=echo;;
+		-h|--help)              usage;;
+        pdf | serve | doxygen)  DO_ACTION=$1;;
+		--)                     shift; ARGS="$ARGS $*"; break;;
+        *)                      ARGS="$ARGS $1";;
 	esac
     shift
 done
+
 
 cd $(dirname $0)
 ROOTDIR=`pwd -P`
@@ -65,10 +68,10 @@ if [ "$DO_ACTION" = "pdf" -o "$DO_ACTION" = "serve" ]; then
 
         VERSION="_v$(grep  '"version":' $ROOTDIR/book.json | cut -d'"' -f 4)"
 	    OUTFILE=$OUT_DIR/$OUTFILENAME$VERSION.pdf
-        $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG
+        $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG $ARGS
         [ "$?" = "0" ] && echo "PDF has been successfully generated in $OUTFILE"
     else
-        $DRY $GITBOOK serve $DEBUG_FLAG
+        $DRY $GITBOOK serve $DEBUG_FLAG $ARGS
     fi
 
 elif [ "$DO_ACTION" = "doxygen" ]; then
