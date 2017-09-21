@@ -112,7 +112,7 @@ seb@laptop ~$ ssh -p 2222 devel@localhost
 # Status XDS server:
 devel@docker ~$ sudo systemctl status xds-server.service
 
-# Stop XDS server
+# Stop XDS server
 devel@docker ~$ sudo systemctl stop xds-server.service
 
 # Start XDS server

@@ -85,7 +85,7 @@ inside and outside docker):
 |-------------------|-------------------------|---------|
 | $HOME/xds-workspace | /home/devel/xds-workspace | XDS projects workspace location|
 | $HOME/ssd/xdt_0 | /xdt | location to store SDKs |
-| $HOME/devel/docker/share |/home/devel/share | another shared directory |
+| $HOME/devel/docker/share |/home/devel/share | another shared directory |
 
 <!-- note -->
 Please refer to **part 2 - xds-server** documentation for additional info.
@@ -186,7 +186,7 @@ All fields are optional and example below corresponds to the default values:
 # Status XDS server:
 seb@laptop ~$ sudo systemctl status xds-server.service
 
-# Stop XDS server
+# Stop XDS server
 seb@laptop ~$ sudo systemctl stop xds-server.service
 
 # Start XDS server
