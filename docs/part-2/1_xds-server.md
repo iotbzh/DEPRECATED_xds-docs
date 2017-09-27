@@ -235,6 +235,10 @@ And to install `xds-server` (by default in `/opt/AGL/xds/server`):
  make install
 ```
 
+>**WARNING:** makefile install rule and default values in configuration file are set
+ to fit the docker setup, so you may need to adapt some settings when you want to install
+ xds-server natively.
+
 >**NOTE:** Used `DESTDIR` to specify another install directory
 >```bash
 >make install DESTDIR=$HOME/opt/xds-server
