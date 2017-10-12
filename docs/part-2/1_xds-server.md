@@ -192,19 +192,24 @@ See also `xds-agent` [README file](https://github.com/iotbzh/xds-agent) for more
 - Install and setup [Go](https://golang.org/doc/install) version 1.7 or higher to compile this tool.
 - Install [npm](https://www.npmjs.com/)
 - Install [gulp](http://gulpjs.com/)
+- Install [nodejs](https://nodejs.org/en/)
 
 Ubuntu:
 
 ```bash
- sudo apt-get install golang npm curl git zip
- sudo npm install -g gulp-cli
+ sudo apt-get install golang npm curl git zip unzip
+ sudo npm install -g gulp-cli n
+ # Install LTS version of nodejs
+ sudo n lts
 ```
 
 openSUSE:
 
 ```bash
- sudo zypper install go npm git curl zip
- sudo npm install -g gulp-cli
+ sudo zypper install go npm git curl zip unzip
+ sudo npm install -g gulp-cli n
+ # Install LTS version of nodejs
+ sudo n lts
 ```
 
 Don't forget to open new user session after installing the packages.
