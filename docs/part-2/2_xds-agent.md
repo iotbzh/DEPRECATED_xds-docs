@@ -69,6 +69,8 @@ You can now use XDS dashboard and check that connection with `xds-agent` is up.
 Install and setup [Go](https://golang.org/doc/install) version 1.8 or
 higher to compile this tool.
 
+>**NOTE:** for Ubuntu, you can use a PPA, see [https://github.com/golang/go/wiki/Ubuntu](https://github.com/golang/go/wiki/Ubuntu)
+
 ### Building
 
 Clone this repo into your `$GOPATH/src/github.com/iotbzh` and use delivered Makefile:
@@ -94,7 +96,20 @@ make install
 
 #### Cross build
 
-For example on a Linux machine to cross-build for Windows, just execute:
+For example on a Linux machine to cross-build for Windows, just follow these steps.
+
+The first time you need to install all the windows-amd64 standard packages on
+your system with
+
+```bash
+# List all supported OS / ARCH
+go tool dist list
+
+# Install all standard packages for another OS/ARCH (eg. windows amd64)
+GOOS=windows GOARCH=amd64 go install -v -a std
+```
+
+Then compile and package xds-agent using provided makefile
 
 ```bash
 export GOOS=windows
