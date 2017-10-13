@@ -18,10 +18,11 @@ Configuration through environment variables may also be defined in a file that
 will be sourced on `xds-exec` start-up. Use `--config|-c` option or set
 `XDS_CONFIG` environment variable to specify the config filename.
 
-Order between options, config file settings and environment variables is :
+So configuration is driven either by environment variables or by command line
+options or using a config file knowning that the following priority order is used:
 
-1. use option value (for example `-id`)
-1. else use variable `XDS_xxx` (for example `XDS_PROJECT_ID`) when a config file is specified with `--config|-c` option.
+1. use option value (for example use project ID set by `--id` option),
+1. else use variable `XDS_xxx` (for example `XDS_PROJECT_ID` variable) when a config file is specified with `--config|-c` option,
 1. else use `XDS_xxx` (for example `XDS_PROJECT_ID`) environment variable
 
 <!-- note -->
