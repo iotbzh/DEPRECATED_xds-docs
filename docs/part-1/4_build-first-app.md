@@ -167,7 +167,7 @@ __Netbeans 8.x :__
 
   - in **Build** category, click on **Manage Configurations** button and then **New** button to add a new configuration named for example "Gen3 board"
 
-    ![Select Model panel](./pictures/nb_new-project-2.png)
+    ![Select Build category](./pictures/nb_new-project-2.png)
 
   - Click on **Set Active** button
 
@@ -179,9 +179,15 @@ __Netbeans 8.x :__
   - Select **Make** sub-category, and set:
     - Working Directory: `build_gen3`
     - Build Command: `xds-exec -c ../xds-gen3.conf -- make remote-target-populate`
-    - Clean Command: `xds-exec -c ../xds-gen3.conf  -- make clean`
+    - Clean Command: `xds-exec -c ../xds-gen3.conf -- make clean`
 
-    ![Select Model panel](./pictures/nb_new-project-3.png)
+    ![Select Make sub-category](./pictures/nb_new-project-3.png)
+
+  - Select **Run** sub-category, and set:
+    - Run Command: `target/start-on-root@renesas-gen3.sh`
+    - Run Directory: `build-gen3`
+
+    ![Select Run  sub-category](./pictures/nb_new-project-4.png)
 
   - Click on **OK** button to save settings
 
