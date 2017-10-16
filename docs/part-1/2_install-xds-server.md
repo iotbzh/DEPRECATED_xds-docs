@@ -2,7 +2,7 @@
 
 Depending of your configuration, this step is necessary or not.
 
-IOW **you are a developer and plan to use/connect to an existing `xds-server`**
+In other words **you are a developer and plan to use/connect to an existing `xds-server`**
 running on your local network (On-Premise config) or in the Cloud (SaaS config),
 **you don't need to install the server part and you can skip this step**.
 
@@ -70,6 +70,9 @@ interface, what we call the "Dashboard", using a web browser :
 seb@laptop ~$ xdg-open http://localhost:8000
 ```
 
+`xds-server` is now up and running, you can now install AGL SDKs, please refer
+to chapter named "Installing AGL SDKs"
+
 ### Container settings
 
 This container (ID=0) exposes following ports:
@@ -97,9 +100,9 @@ _coming soon ..._
 
 ## <a name="native"></a> Native installation
 
-<!-- note -->
-Only Linux host OS is supported and tested for native installation !
-<!-- endnote -->
+You can chose to install xds-server 'natively' instead of within a docker
+container but only Linux host OSes are supported and tested for native
+installation !
 
 ### Install packages for debian distro type
 
@@ -184,16 +187,16 @@ All fields are optional and example below corresponds to the default values:
 
 ```bash
 # Status XDS server:
-seb@laptop ~$ sudo systemctl status xds-server.service
+seb@laptop ~$ systemctl --user status xds-server.service
 
 # Stop XDS server
-seb@laptop ~$ sudo systemctl stop xds-server.service
+seb@laptop ~$ systemctl --user stop xds-server.service
 
 # Start XDS server
-seb@laptop ~$ sudo systemctl start xds-server.service
+seb@laptop ~$ systemctl --user start xds-server.service
 
 # Get XDS server logs
-seb@laptop ~$ sudo journalctl --unit=xds-server.service --output=cat
+seb@laptop ~$ systemctl --user --unit=xds-server.service --output=cat
 ```
 
 To check if xds-server is correctly install and running, you can access the web

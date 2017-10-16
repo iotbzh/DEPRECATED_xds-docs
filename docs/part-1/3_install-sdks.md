@@ -13,7 +13,7 @@ a pre-packaged AGL SDK.
 `sdkRootDir` setting (see `xds-server` configuration chapter for more details).
 
 For now, you can only install SDK using a bash script but in a near future you
-will be able to do that using XDS Dashboard.
+will be able to manage SDKs using XDS Dashboard.
 
 So to install a SDK, use provided `install-agl-sdks` script:
 
@@ -23,6 +23,13 @@ seb@laptop ~$ ssh -p 2222 devel@localhost
 
 # For example, Install ARM64 SDK (automatic download)
 devel@docker ~$ sudo /opt/AGL/xds/server/xds-utils/install-agl-sdks.sh --arch aarch64
+```
+
+You may also want to install an SDK that you built manually (see [Part 1 - SDK-compilation-installation](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/sdk-devkit/docs/part-1/1_7-SDK-compilation-installation.html))
+
+```bash
+# Optional - Log into the container (only necessary when xds-server is running within a docker container)
+seb@laptop ~$ ssh -p 2222 devel@localhost
 
 # Install Intel corei7-64 SDK (using an SDK tarball that has been built or downloaded manually)
 devel@docker ~$ sudo /opt/AGL/xds/server/xds-utils/install-agl-sdks.sh --arch corei7-64 --file /tmp/poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-corei7-64-toolchain-
