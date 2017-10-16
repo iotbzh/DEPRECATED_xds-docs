@@ -84,8 +84,8 @@ inside and outside docker):
 | Directory on host | Directory inside docker | Comment |
 |-------------------|-------------------------|---------|
 | $HOME/xds-workspace | /home/devel/xds-workspace | XDS projects workspace location|
-| $HOME/ssd/xdt_0 | /xdt | location to store SDKs |
-| $HOME/devel/docker/share |/home/devel/share | another shared directory |
+| $HOME/xds-workspace/.xdt_0 | /xdt | location to store SDKs |
+| $USER_VOLUME | $USER_VOLUME | user path, see `--volume` option of `xds-docker-create-container.sh` script |
 
 <!-- note -->
 Please refer to **part 2 - xds-server** documentation for additional info.
