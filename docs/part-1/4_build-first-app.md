@@ -10,7 +10,7 @@ Depending of the project sharing method:
 - Path mapping: you must clone project into `$HOME/xds-workspace` directory.
 
 <!-- note -->
-> **Note** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
+> **Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
 project based on [app-templates](https://git.automotivelinux.org/apps/app-templates/)
 (included as a git submodule). This CMake templating, used to develop application
 with the AGL Application Framework, will automatically generate makefile rules
@@ -268,7 +268,8 @@ And define your own tasks, here is an example to build [unicens2-binding](https:
 }
 ```
 
-> **NOTE** You can also add your own keybindings to trig above tasks, for example:
+> **Note:** You can also add your own keybindings to trig above tasks, for example:
+>
 > ```json
 > // Build
 > {

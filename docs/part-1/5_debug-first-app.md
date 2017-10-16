@@ -146,7 +146,7 @@ xds-gdb -x target/gdb-on-root@myTarget.ini
 ```
 
 <!-- note -->
-> **Note** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
+> **Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
 project based on [app-templates](https://git.automotivelinux.org/apps/app-templates/)
 (included as a git submodule). This CMake templating, used to develop application
 with the AGL Application Framework, will automatically generate makefile rules

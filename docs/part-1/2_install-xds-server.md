@@ -141,7 +141,7 @@ are set into `/etc/default/xds-server` file.
 and default JSON config is `/etc/xds-server/config.json`.
 
 <!-- note -->
->**Note**: you can use your own JSON config by settings `APP_CONFIG` variable of
+>**Note:** you can use your own JSON config by settings `APP_CONFIG` variable of
 `/etc/default/xds-server` file to your file, for example
 `/home/MYUSER/.xds/server/config.json`
 <!-- endnote -->
@@ -155,7 +155,7 @@ Supported fields in JSON configuration file are :
 - **sdkRootDir** : root directory where cross SDKs are installed
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
-- **syncthing.gui-address** : syncthing gui url (default http://localhost:8384)
+- **syncthing.gui-address** : syncthing gui url (default <http://localhost:8384>)
 - **syncthing.gui-apikey** : syncthing api-key to use (default auto-generated)
 
 All fields are optional and example below corresponds to the default values:
@@ -176,7 +176,7 @@ All fields are optional and example below corresponds to the default values:
 }
 ```
 
->**NOTE:** environment variables are supported by using `${MY_VAR}` syntax.
+>**Note:** environment variables are supported by using `${MY_VAR}` syntax.
 
 ### Start/Stop xds-server
 

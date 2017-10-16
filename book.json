@@ -62,6 +62,16 @@
                     "substitute": "</div>"
                 },
                 {
+                    "pattern": "<!-- warning -->",
+                    "flags": "g",
+                    "substitute": "<div class=\"warning\">"
+                },
+                {
+                    "pattern": "<!-- endwarning -->",
+                    "flags": "g",
+                    "substitute": "</div>"
+                },
+                {
                     "pattern": "!\\[(.*?)\\]\\((.*?)(?:\\s+\"(.*)\")?\\){0,}{caption=1([^\\}]*)}",
                     "flags": "gmi",
                     "substitute": "<figure id=\"fig_PAGE_LEVEL_._INDEX_\"><img $3 alt=\"$1\" title=\"$1\" href=\"$2\"><figcaption></figcaption></figure>",

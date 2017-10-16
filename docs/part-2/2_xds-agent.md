@@ -46,7 +46,7 @@ below corresponds to the default values):
 }
 ```
 
->**NOTE:** environment variables are supported by using `${MY_VAR}` syntax.
+>**Note:** environment variables are supported by using `${MY_VAR}` syntax.
 
 ## Start-up
 
@@ -56,7 +56,7 @@ Simply to start `xds-agent` executable
 ./xds-agent &
 ```
 
->**NOTE** if need be, you can increase log level by setting option
+>**Note:** if need be, you can increase log level by setting option
 `--log <level>`, supported *level* are: panic, fatal, error, warn, info, debug.
 
 You can now use XDS dashboard and check that connection with `xds-agent` is up.
@@ -69,7 +69,7 @@ You can now use XDS dashboard and check that connection with `xds-agent` is up.
 Install and setup [Go](https://golang.org/doc/install) version 1.8 or
 higher to compile this tool.
 
->**NOTE:** for Ubuntu, you can use a PPA, see [https://github.com/golang/go/wiki/Ubuntu](https://github.com/golang/go/wiki/Ubuntu)
+>**Note:** for Ubuntu, you can use a PPA, see [https://github.com/golang/go/wiki/Ubuntu](https://github.com/golang/go/wiki/Ubuntu)
 
 ### Building
 
@@ -89,7 +89,7 @@ And to install xds-agent (by default in `/usr/local/bin`):
 make install
 ```
 
->**NOTE:** Used `DESTDIR` to specify another install directory
+>**Note:** Used `DESTDIR` to specify another install directory
 >```bash
 >make install DESTDIR=$HOME/opt/xds-agent
 >```

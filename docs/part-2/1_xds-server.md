@@ -26,7 +26,7 @@ IDE (such as Netbeans or Visual Studio Code) through `xds-server`.
 [AGL](https://www.automotivelinux.org/) applications. That's why `xds-server` has
 been integrated into AGL SDK docker container.
 
->**NOTE** For more info about AGL SDK docker container, please refer to
+>**Note:** For more info about AGL SDK docker container, please refer to
 [AGL SDK Quick Setup](http://docs.automotivelinux.org/docs/getting_started/en/dev/reference/setup-sdk-environment.html)
 
 ### Get the container
@@ -240,14 +240,19 @@ And to install `xds-server` (by default in `/opt/AGL/xds/server`):
  make install
 ```
 
->**WARNING:** makefile install rule and default values in configuration file are set
- to fit the docker setup, so you may need to adapt some settings when you want to install
- xds-server natively.
+<!-- warning -->
+>**Warning:** makefile install rule and default values in configuration file are set
+> to fit the docker setup, so you may need to adapt some settings when you want to install
+> xds-server natively.
+<!-- endwarning -->
 
->**NOTE:** Used `DESTDIR` to specify another install directory
+<!-- note -->
+>**Note:** Used `DESTDIR` to specify another install directory
+>
 >```bash
 >make install DESTDIR=$HOME/opt/xds-server
 >```
+<!-- endnote -->
 
 #### XDS docker image
 
@@ -284,7 +289,7 @@ below corresponds to the default values):
 - **sdkRootDir** : root directory where cross SDKs are installed
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
-- **syncthing.gui-address** : syncthing gui url (default http://localhost:8384)
+- **syncthing.gui-address** : syncthing gui url (default <http://localhost:8384>)
 - **syncthing.gui-apikey** : syncthing api-key to use (default auto-generated)
 
 ```json
@@ -303,7 +308,7 @@ below corresponds to the default values):
 }
 ```
 
->**NOTE:** environment variables are supported by using `${MY_VAR}` syntax.
+>**Note:** environment variables are supported by using `${MY_VAR}` syntax.
 
 ## Debugging
 
