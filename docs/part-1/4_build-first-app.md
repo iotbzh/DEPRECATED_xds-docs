@@ -63,7 +63,7 @@ this ID in project page of XDS dashboard or you can get it from command line
 using the `--list` option. This option lists all existing projects ID:
 
 ```bash
-./bin/xds-exec --list
+xds-exec --list
 
 List of existing projects:
   CKI7R47-UWNDQC3_myProject
