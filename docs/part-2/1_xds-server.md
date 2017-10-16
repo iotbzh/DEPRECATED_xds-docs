@@ -289,7 +289,7 @@ below corresponds to the default values):
 - **sdkRootDir** : root directory where cross SDKs are installed
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
-- **syncthing.gui-address** : syncthing gui url (default <http://localhost:8384>)
+- **syncthing.gui-address** : syncthing gui url (default <http://localhost:8385>)
 - **syncthing.gui-apikey** : syncthing api-key to use (default auto-generated)
 
 ```json
@@ -302,7 +302,7 @@ below corresponds to the default values):
     "syncthing": {
         "binDir": "./bin",
         "home": "${HOME}/.xds-server/syncthing-config",
-        "gui-address": "http://localhost:8384",
+        "gui-address": "http://localhost:8385",
         "gui-apikey": "123456789",
     }
 }

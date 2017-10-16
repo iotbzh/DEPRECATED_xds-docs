@@ -29,7 +29,7 @@ below corresponds to the default values):
 - **xds-apikey** : xds-agent api-key to use (always set value to "1234abcezam")
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
-- **syncthing.gui-address** : syncthing gui url (default http://localhost:8384)
+- **syncthing.gui-address** : syncthing gui url (default http://localhost:8386)
 - **syncthing.gui-apikey** : syncthing api-key to use (default auto-generated)
 
 ```json
@@ -40,7 +40,7 @@ below corresponds to the default values):
     "syncthing": {
         "binDir": ".",
         "home": "${HOME}/.xds/agent/syncthing-config",
-        "gui-address": "http://localhost:8384",
+        "gui-address": "http://localhost:8386",
         "gui-apikey": "1234abcezam",
     }
 }
