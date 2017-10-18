@@ -16,6 +16,6 @@
             "vbox", "aarch", "crosssdk", "corei", "templating", "LOGLEVEL",
             "LOGFILE", "RPATH", "DRSYNC", "usermod", "groupmod", "chown",
             "MACHINENAME", "glibc", "DESTDIR", "realpath", "GOARCH", "sdkid",
-            "newtool", "setx"
+            "newtool", "setx", "autologin", "loginctl", "endwarning"
         ]
 }

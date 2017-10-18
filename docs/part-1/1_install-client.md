@@ -56,3 +56,23 @@ seb@laptop ~$  sudo zypper install agl-xds-gdb
 - repeat the previous steps to install other tools depending of your needs:
   - `xds-exec` : requested for command line and IDE integration. ([released tarball link](https://github.com/iotbzh/xds-exec/releases)).
   - `xds-gdb` : requested for debugging application. ([released tarball link](https://github.com/iotbzh/xds-gdb/releases)).
+
+## Start xds-agent
+
+XDS-agent is a client tool that must run on your local / user development
+machine when you use XDS.
+
+For Linux distro, a user systemd service is provided, so you just need to enable
+if you want to start it automatically at boot and you can also start it
+immediately using following commands:
+
+```bash
+# Enable xds-agent service at boot
+seb@laptop ~$  systemctl --user enable xds-agent.service
+
+# Manually start xds-agent service
+seb@laptop ~$  systemctl --user start xds-agent.service
+
+# Get status and log of xds-agent service
+seb@laptop ~$  systemctl --user status xds-agent.service
+```

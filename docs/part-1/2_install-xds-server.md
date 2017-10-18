@@ -57,6 +57,14 @@ seb@laptop ~$ docker ps | grep worker-xds
 b985d81af40c        docker.automotivelinux.org/agl/worker-xds:3.99.1       "/usr/bin/wait_for..."   6 days ago           Up 4 hours          0.0.0.0:8000->8000/tcp, 0.0.0.0:69->69/udp, 0.0.0.0:10809->10809/tcp, 0.0.0.0:2222->22/tcp    agl-xds-seb@laptop-0-seb
 ```
 
+Note that you can also add a new shared directory using `--volume` option in order
+to use for example with Path-Mapping folder type.
+
+```bash
+# Create new XDS worker container and share extra '$HOME/my-workspace' directory
+seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
+```
+
 ### Check if xds-server is running
 
 `xds-server` is automatically started as a service on container startup.

@@ -1,5 +1,15 @@
 # Create your first AGL application
 
+## Prerequisites
+
+- `xds-agent` is running on your machine
+  (see **Installing XDS client tools**  previous chapter)
+- `xds-server` is running locally in a docker container or is accessible on your
+  network (see **Installing XDS server** previous chapter)
+- one or more SDK have been installed (see **Installing AGL SDKs** previous chapter)
+- XDS configuration is correct: in other words, all table lines are blue in
+  configuration page of XDS Dashboard.
+
 ## Setup
 
 Let's use for example helloworld-native-application, so you need first to clone
@@ -41,6 +51,10 @@ Set `Sharing Type` and paths according to your setup.
 
 ![](./pictures/xds-dashboard-prj-1.png){:: style="width:90%;"}
 
+Note that XDS creates a file name `xds-project.conf` (if not already exists)
+when you declare a new project using XDS Dashboard. This file may be very useful
+when you will use XDS client tools such as `xds-exec` (see next chapter).
+
 <!-- note -->
 >**Note:** when you select `Path mapping`, you must clone your project into
 `$HOME/xds-workspace` directory (named "Local Path" in modal window) and
@@ -71,6 +85,10 @@ List of existing projects:
   CKI7R47-UWNDQC3_test3
 ```
 
+> **Note:** XDS tools, including `xds-exec` are installed by default in `/opt/AGL/bin`
+> directory and this path has been added into your PATH variable.
+> If it is not the case, just add it manually using `export PATH=${PATH}:/opt/AGL/bin` command line.
+
 Now to refer your project, just use --id option or use `XDS_PROJECT_ID`
 environment variable.
 
@@ -78,14 +96,9 @@ You are now ready to use XDS to for example cross build your project.
 Here is an example to build a project based on CMakefile:
 
 ```bash
-# Add xds-exec in the PATH
-export PATH=${PATH}:/opt/AGL/bin
-
-# Go into your project directory
+# Go into your project directory and create a build directory
 cd $MY_PROJECT_DIR
-
-# Create a build directory
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- mkdir build
+mkdir build
 
 # Generate build system using cmake
 xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && cmake ..
@@ -98,23 +111,31 @@ To avoid to set project id, xds server url, ... at each command line, you can
 define these settings as environment variable within an env file and just set
 `--config` option or source file before executing xds-exec.
 
+XDS creates a file name `xds-project.conf` (only if not already exists) when you
+declare a new project using XDS Dashboard. Use this file with `--config` option.
+
 For example, the equivalence of above command is:
 
 ```bash
 # MY_PROJECT_DIR=/home/seb/xds-workspace/helloworld-native-application
 cd $MY_PROJECT_DIR
-cat > xds-project.conf << EOF
- export XDS_SERVER_URL=localhost:8000
- export XDS_PROJECT_ID=CKI7R47-UWNDQC3_myProject
- export XDS_SDK_ID=poky-agl_corei7-64_4.0.1
-EOF
 
-xds-exec --config xds-project.conf -- mkdir build
+# Edit and potentially adapt xds-project.conf file that has been created
+# automatically on project declaration using XDS Dashboard
+vi xds-project.conf
+  # XDS project settings
+  export XDS_SERVER_URL=localhost:8000
+  export XDS_PROJECT_ID=cde3b382-9d3b-11e7_helloworld-native-application
+  export XDS_SDK_ID=poky-agl_aarch64_4.0.1
 
-# Or sourcing env file
+# Create build directory and invoke cmake and then build project
+xds-exec --config xds-project.conf -- "mkdir -p build && cd build && cmake .."
+cd build && xds-exec -- make all
+
+# Or equivalent by first sourcing conf file (avoid to set --config option)
 source xds-project.conf
-xds-exec -- mkdir -o build && cd build && cmake ..
-xds-exec -- cd build && make all
+xds-exec -- "mkdir -p build && cd build && cmake .."
+cd build && xds-exec -- make all
 ```
 
 <!-- note -->
@@ -124,22 +145,26 @@ to execute on xds-server.
 
 ## Build from IDE
 
-First create the XDS config file that will be used later by xds-exec commands.
-For example we use here aarch64 SDK to cross build application for a Renesas
-Gen3 board.
+First create an XDS config file or reuse the previous one, for example we use 
+here aarch64 SDK to cross build application for a Renesas Gen3 board.
 
 ```bash
 # create file at root directory of your project
 # for example:
 # MY_PROJECT_DIR=/home/seb/xds-workspace/helloworld-native-application
-cat > $MY_PROJECT_DIR/xds-gen3.conf << EOF
+cat > $MY_PROJECT_DIR/xds-project.conf << EOF
  export XDS_SERVER_URL=localhost:8000
  export XDS_PROJECT_ID=cde3b382-9d3b-11e7_helloworld-native-application
- export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+ export XDS_SDK_ID=poky-agl_aarch64_3.99.3
 EOF
 ```
 
 ### NetBeans
+
+This chapter will show you how to create 2 configurations, one to compile your
+project natively (using native GNU gcc) and one to cross-compile your project
+using XDS. You can easily switch from one to other configuration using menu
+**Run -> Set Project Configuration**.
 
 __Netbeans 8.x :__
 
@@ -154,16 +179,23 @@ __Netbeans 8.x :__
 
   - Finally click on **OK** button.
 
-- Open menu **File** -> **New Project**
+- Now create we first declare project into NetBeans and create first a native
+  configuration. To do that, open menu **File** -> **New Project**
 
 - Select **C/C++ Project with Existing Sources** ;
   Click on **Next** button
 
-- Specify the directory where you cloned your project and click on **Finish** button to keep all default settings:
+- Specify the directory where you cloned your project and click on **Finish** button to keep all default settings in order to create a *native configuration*.
 
     ![Select Model panel](./pictures/nb_new-project-1.png)
 
-- Edit project properties (using menu **File** -> **Project Properties**) to add a new configuration that will use XDS to cross-compile your application for example for a Renesas Gen3 board)
+<!-- warning -->
+> **Warning:** Take care to set **Tool Collection** to **Default GNU** in order
+> to create a native configuration based on native GNU GCC.
+<!-- endwarning -->
+
+- Now we will create a **cross configuration** based on XDS tools.
+  Edit project properties (using menu **File** -> **Project Properties**) to add a new configuration that will use XDS to cross-compile your application for example for a Renesas Gen3 board.
 
   - in **Build** category, click on **Manage Configurations** button and then **New** button to add a new configuration named for example "Gen3 board"
 
@@ -173,13 +205,13 @@ __Netbeans 8.x :__
 
   - Select **Pre-Build** sub-category, and set:
     - Working Directory: `build_gen3`
-    - Command Line: `xds-exec -c ../xds-gen3.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ..`
+    - Command Line: `xds-exec -c ../xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ..`
     - Pre-build First: `ticked`
 
   - Select **Make** sub-category, and set:
     - Working Directory: `build_gen3`
-    - Build Command: `xds-exec -c ../xds-gen3.conf -- make remote-target-populate`
-    - Clean Command: `xds-exec -c ../xds-gen3.conf -- make clean`
+    - Build Command: `xds-exec -c ../xds-project.conf -- make remote-target-populate`
+    - Clean Command: `xds-exec -c ../xds-project.conf -- make clean`
 
     ![Select Make sub-category](./pictures/nb_new-project-3.png)
 
@@ -193,7 +225,8 @@ __Netbeans 8.x :__
 
 By changing configuration from **Default** to **Gen3 board**, you can now simply
 compile your helloworld application natively (**Default** configuration) or
-cross-compile your application through XDS for a Renesas Gen3 board (**Gen3 board** configuration).
+cross-compile your application through XDS for the Renesas Gen3 board
+(**Gen3 board** configuration).
 
 ### Visual Studio Code
 
@@ -204,65 +237,46 @@ cd $MY_PROJECT_DIR
 code . &
 ```
 
-Add new tasks : press `Ctrl+Shift+P` and select the `Tasks: Configure Task Runner` command and you will see a list of task runner templates.
+Add new tasks : press `Ctrl+Shift+P` and select the `Tasks: Configure Task`
+command and you will see a list of task runner templates.
 
-And define your own tasks, here is an example to build [unicens2-binding](https://github.com/iotbzh/unicens2-binding) AGL binding based on cmake (_options value of args array must be updated regarding your settings_):
+And define your own tasks, here is an example to build
+[helloworld-native-application](https://github.com/iotbzh/helloworld-native-application)
+AGL helloworld application based on cmake template.
 
 ```json
 {
-    "version": "0.1.0",
-    "linux": {
-        "command": "/opt/AGL/bin/xds-exec"
+    "version": "2.0.0",
+    "type": "shell",
+    "presentation": {
+        "reveal": "always"
     },
-    "isShellCommand": true,
-    "args": [
-        "-url", "localhost:8000",
-        "-id", "CKI7R47-UWNDQC3_myProject",
-        "-sdkid", "poky-agl_aarch64_4.0.1",
-        "--"
-    ],
-    "showOutput": "always",
-    "tasks": [{
+    "tasks": [
+        {
             "taskName": "clean",
-            "suppressTaskName": true,
-            "args": [
-                "rm -rf build/* && echo Cleanup done."
-            ]
+            "command": "/bin/rm -rf ${workspaceFolder}/build/* && mkdir -p build && echo Cleanup done.",
+            "problemMatcher": []
         },
         {
             "taskName": "pre-build",
-            "isBuildCommand": true,
-            "suppressTaskName": true,
-            "args": [
-                "mkdir -p build && cd build && cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt"
+            "group": "build",
+            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ../",
+            "problemMatcher": [
+                "$gcc"
             ]
         },
         {
             "taskName": "build",
-            "isBuildCommand": true,
-            "suppressTaskName": true,
-            "args": [
-                "cd build && make widget"
-            ],
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": ["absolute"],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            }
+            "group": "build",
+            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- make widget",
+            "problemMatcher": [
+                "$gcc"
+            ]
         },
         {
             "taskName": "populate",
-            "suppressTaskName": true,
-            "args" : [
-                "cd build && make widget-target-install"
-            ]
+            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- make widget-target-install",
+            "problemMatcher": []
         }
     ]
 }

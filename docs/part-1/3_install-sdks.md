@@ -35,3 +35,12 @@ seb@laptop ~$ ssh -p 2222 devel@localhost
 devel@docker ~$ sudo /opt/AGL/xds/server/xds-utils/install-agl-sdks.sh --arch corei7-64 --file /tmp/poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-corei7-64-toolchain-
 4.0.1.sh
 ```
+
+<!-- warning -->
+>**Warning:** due to some limitation, you need for now to restart `xds-server` in
+order to make new installed SDK visible/available.
+> ```bash
+> seb@laptop ~$  ssh -p 2222 devel@localhost
+> devel@docker ~$  systemctl --user restart xds-server.service
+> ```
+<!-- endwarning -->

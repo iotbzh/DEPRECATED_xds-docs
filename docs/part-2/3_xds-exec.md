@@ -19,7 +19,7 @@ will be sourced on `xds-exec` start-up. Use `--config|-c` option or set
 `XDS_CONFIG` environment variable to specify the config filename.
 
 So configuration is driven either by environment variables or by command line
-options or using a config file knowning that the following priority order is used:
+options or using a config file knowing that the following priority order is used:
 
 1. use option value (for example use project ID set by `--id` option),
 1. else use variable `XDS_xxx` (for example `XDS_PROJECT_ID` variable) when a config file is specified with `--config|-c` option,

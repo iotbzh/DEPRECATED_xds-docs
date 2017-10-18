@@ -65,6 +65,14 @@ seb@laptop ~$ docker ps | grep worker-xds
 b985d81af40c        docker.automotivelinux.org/agl/worker-xds:3.99.1       "/usr/bin/wait_for..."   6 days ago           Up 4 hours          0.0.0.0:8000->8000/tcp, 0.0.0.0:69->69/udp, 0.0.0.0:10809->10809/tcp, 0.0.0.0:2222->22/tcp    agl-xds-seb@laptop-0-seb
 ```
 
+Note that you can also add a new shared directory using `--volume` option in order
+to use for example with Path-Mapping folder type.
+
+```bash
+# Create new XDS worker container and share extra '$HOME/my-workspace' directory
+seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
+```
+
 This container (ID=0) exposes following ports:
 
 - 8000 : `xds-server` to serve XDS Dashboard
@@ -73,14 +81,19 @@ This container (ID=0) exposes following ports:
 
 #### Manually setup docker user id
 
+<!-- note -->
+>**Note:** if you used `xds-docker-create-container.sh` script to create XDS
+> docker container, user uid/gid inside docker has already been changed by this script.
+<!-- endnote -->
+
 If you plan to **use path-mapping sharing type for your projects**, you need to have the same user id and group id inside and outside docker. By default user and group name inside docker is set `devel` (id `1664`), use following commands to replace id `1664` with your user/group id:
 
 ```bash
 # Set docker container name to use (usually agl-xds-xxx where xxx is USERNAME@MACHINENAME-IDX-NAME)
 seb@laptop ~$ export CONTAINER_NAME=agl-xds-seb@laptop-0-seb
 
-# First stop xds-server
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "systemctl stop xds-server"
+# First kill all processes of devel user (including running xds-server)
+seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "/bin/loginctl kill-user devel"
 
 # Change user and group id inside docker to match your ids
 seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "usermod -u $(id -u) devel"
@@ -89,8 +102,11 @@ seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "groupmod -g $(id -g) devel"
 # Update some files ownership
 seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "chown -R devel:devel /home/devel /tmp/xds*"
 
-# Restart xds-server
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "systemctl start xds-server"
+# Restart devel autologin service
+seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "systemctl start autologin"
+
+# Restart xds-server as a service (ssh port 2222 may depend on your container ID)
+seb@laptop ~$ ssh -p 2222 devel@localhost -- "systemctl --user start xds-server"
 ```
 
 ## Check if xds-server is running (open XDS Dashboard)
@@ -110,16 +126,16 @@ If needed you can status / stop / start  it manually using following commands:
 seb@laptop ~$ ssh -p 2222 devel@localhost
 
 # Status XDS server:
-devel@docker ~$ sudo systemctl status xds-server.service
+devel@docker ~$ systemctl --user status xds-server.service
 
 # Stop XDS server
-devel@docker ~$ sudo systemctl stop xds-server.service
+devel@docker ~$ systemctl --user stop xds-server.service
 
 # Start XDS server
-devel@docker ~$ sudo systemctl start xds-server.service
+devel@docker ~$ systemctl --user start xds-server.service
 
 # Get XDS server logs
-devel@docker ~$ sudo journalctl --unit=xds-server.service --output=cat
+devel@docker ~$ journalctl --user --unit=xds-server.service --output=cat
 ```
 
 ### Manually Start XDS server
@@ -140,7 +156,7 @@ supported *level* are: panic, fatal, error, warn, info, debug.
 ```bash
 seb@laptop ~$ ssh -p 2222 devel@localhost
 devel@docker ~$ echo 'LOG_LEVEL=debug' | sudo tee --append /etc/default/xds-server > /dev/null
-devel@docker ~$ sudo systemctl restart xds-server.service
+devel@docker ~$ systemctl --user restart xds-server.service
 devel@docker ~$ tail -f /tmp/xds-server/logs/xds-server.log
 ```
 

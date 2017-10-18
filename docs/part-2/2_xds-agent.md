@@ -11,15 +11,14 @@ used to remotely cross build applications.
 
 ## Configuration
 
-xds-agent configuration is driven by a JSON config file (named `agent-config.json`).
+xds-agent configuration is driven by a JSON config file.
 The tarball mentioned in previous section includes this file with default settings.
 
-Here is the logic to determine which `agent-config.json` file will be used:
+Here is the logic to determine which conf file will be used:
 
 1. from command line option: `--config myConfig.json`
 1. `$HOME/.xds/agent/agent-config.json` file
-1. `/etc/xds-agent/agent-config.json` file
-1. `<xds-agent executable dir>/agent-config.json` file
+1. `/etc/xds-agent/config.json` file
 
 Supported fields in configuration file are (all fields are optional and example
 below corresponds to the default values):
@@ -29,7 +28,7 @@ below corresponds to the default values):
 - **xds-apikey** : xds-agent api-key to use (always set value to "1234abcezam")
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
-- **syncthing.gui-address** : syncthing gui url (default http://localhost:8386)
+- **syncthing.gui-address** : syncthing gui url (default <http://localhost:8386>)
 - **syncthing.gui-apikey** : syncthing api-key to use (default auto-generated)
 
 ```json
