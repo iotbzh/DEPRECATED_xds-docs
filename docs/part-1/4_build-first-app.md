@@ -185,21 +185,27 @@ __Netbeans 8.x :__
 - Select **C/C++ Project with Existing Sources** ;
   Click on **Next** button
 
-- Specify the directory where you cloned your project and click on **Finish** button to keep all default settings in order to create a *native configuration*.
+- Specify your project directory and set **Select Configuration Mode** to
+  **Custom**. Keep **Tool Collection** to **Default GNU** in order to create a
+  *native configuration* based on native GNU GCC. Finally click on **Next** button.
 
     ![Select Model panel](./pictures/nb_new-project-1.png)
 
-<!-- warning -->
-> **Warning:** Take care to set **Tool Collection** to **Default GNU** in order
-> to create a native configuration based on native GNU GCC.
-<!-- endwarning -->
+- Just update **Run in Folder** field and add `build_native` suffix so that
+  resulting build files will be located into `build_native` sub-directory.
+  Keep all others settings to default value and  click on **Next** button.
+
+    ![Select Model panel](./pictures/nb_new-project-2.png)
+
+- Click several times on **Next button** (always keep default settings) and
+  click on **Finish** button to complete creation of native configuration.
 
 - Now we will create a **cross configuration** based on XDS tools.
   Edit project properties (using menu **File** -> **Project Properties**) to add a new configuration that will use XDS to cross-compile your application for example for a Renesas Gen3 board.
 
   - in **Build** category, click on **Manage Configurations** button and then **New** button to add a new configuration named for example "Gen3 board"
 
-    ![Select Build category](./pictures/nb_new-project-2.png)
+    ![Select Build category](./pictures/nb_new-project-3.png)
 
   - Click on **Set Active** button
 
@@ -213,13 +219,13 @@ __Netbeans 8.x :__
     - Build Command: `xds-exec -c ../xds-project.conf -- make remote-target-populate`
     - Clean Command: `xds-exec -c ../xds-project.conf -- make clean`
 
-    ![Select Make sub-category](./pictures/nb_new-project-3.png)
+    ![Select Make sub-category](./pictures/nb_new-project-4.png)
 
   - Select **Run** sub-category, and set:
     - Run Command: `target/start-on-root@renesas-gen3.sh`
     - Run Directory: `build-gen3`
 
-    ![Select Run  sub-category](./pictures/nb_new-project-4.png)
+    ![Select Run  sub-category](./pictures/nb_new-project-5.png)
 
   - Click on **OK** button to save settings
 
