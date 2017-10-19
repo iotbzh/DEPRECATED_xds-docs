@@ -1,10 +1,11 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 
 OUTFILENAME="XDS_UsersGuide"
 
-SCRIPT=$(basename $BASH_SOURCE)
+SCRIPT=$(basename "${BASH_SOURCE[@]}")
 
-VERSION=$(grep '"version":' $(dirname $BASH_SOURCE)/book.json | cut -d'"' -f 4)
+VERSION=$(grep '"version":' "$(dirname "${BASH_SOURCE[@]}")/book.json" | cut -d'"' -f 4)
 [ "$VERSION" != "" ] && OUTFILENAME="${OUTFILENAME}_v${VERSION}"
 
 
@@ -38,11 +39,11 @@ DO_ACTION=""
 OUT_DIR=./build
 ARGS=""
 
-[[ $? != 0 ]] && usage
+[ $# = 0 ] && usage
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--debug)                DEBUG_FLAG="--log=debug --debug";;
-		-d|--dry)               DRY=echo;;
+		-d|--dry)               DRY="echo";;
 		-h|--help)              usage;;
         pdf | serve | doxygen)  DO_ACTION=$1;;
 		--)                     shift; ARGS="$ARGS $*"; break;;
@@ -51,18 +52,21 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-cd $(dirname $0)
-ROOTDIR=`pwd -P`
+cd "$(dirname "$0")" || exit 1
+ROOTDIR=$(pwd -P)
 
 # Create out dir if needed
 [ -d $OUT_DIR ] || mkdir -p $OUT_DIR
 
-if [ "$DO_ACTION" = "pdf" -o "$DO_ACTION" = "serve" ]; then
-    GITBOOK=`which gitbook`
+if [ "$DO_ACTION" = "pdf" ] || [ "$DO_ACTION" = "serve" ]; then
+
+    GITBOOK=$(which gitbook)
     [ "$?" = "1" ] && { echo "You must install gitbook first, using: sudo npm install -g gitbook-cli"; exit 1; }
 
-    EBCONV=`which ebook-convert`
+    which ebook-convert > /dev/null 2>&1
     [ "$?" = "1" ] && { echo "You must install calibre first, using: 'sudo apt install calibre' or refer to https://calibre-ebook.com/download"; exit 1; }
+
+    [ ! -d "$ROOTDIR/node_modules" ] && $GITBOOK install
 
     if [ "$DO_ACTION" = "pdf" ]; then
 
@@ -70,8 +74,9 @@ if [ "$DO_ACTION" = "pdf" -o "$DO_ACTION" = "serve" ]; then
         [[ $ROOTDIR/book.json -nt $ROOTDIR/docs/cover.jpg ]] && { echo "Update cover files"; $ROOTDIR/docs/resources/make_cover.sh || exit 1; }
 
 	    OUTFILE=$OUT_DIR/$OUTFILENAME.pdf
-        $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG $ARGS
-        [ "$?" = "0" ] && echo "PDF has been successfully generated in $OUTFILE"
+        if $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG $ARGS; then
+            echo "PDF has been successfully generated in $OUTFILE"
+        fi
     else
         $DRY $GITBOOK serve $DEBUG_FLAG $ARGS
     fi
