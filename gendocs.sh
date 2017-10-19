@@ -4,6 +4,10 @@ OUTFILENAME="XDS_UsersGuide"
 
 SCRIPT=$(basename $BASH_SOURCE)
 
+VERSION=$(grep '"version":' $(dirname $BASH_SOURCE)/book.json | cut -d'"' -f 4)
+[ "$VERSION" != "" ] && OUTFILENAME="${OUTFILENAME}_v${VERSION}"
+
+
 function usage() {
 	cat <<EOF >&2
 Usage: $SCRIPT [options] [pdf|serve|doxygen]
@@ -47,7 +51,6 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-
 cd $(dirname $0)
 ROOTDIR=`pwd -P`
 
@@ -66,8 +69,7 @@ if [ "$DO_ACTION" = "pdf" -o "$DO_ACTION" = "serve" ]; then
         # Update cover when book.json has been changed
         [[ $ROOTDIR/book.json -nt $ROOTDIR/docs/cover.jpg ]] && { echo "Update cover files"; $ROOTDIR/docs/resources/make_cover.sh || exit 1; }
 
-        VERSION="_v$(grep  '"version":' $ROOTDIR/book.json | cut -d'"' -f 4)"
-	    OUTFILE=$OUT_DIR/$OUTFILENAME$VERSION.pdf
+	    OUTFILE=$OUT_DIR/$OUTFILENAME.pdf
         $DRY $GITBOOK pdf $ROOTDIR $OUTFILE $DEBUG_FLAG $ARGS
         [ "$?" = "0" ] && echo "PDF has been successfully generated in $OUTFILE"
     else
