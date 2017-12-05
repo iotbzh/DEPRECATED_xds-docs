@@ -164,11 +164,11 @@ __Netbeans 8.x :__
 - Open menu **Tools** -> **Options**
   - Open **C/C++** tab, in **Build Tools** sub-tab, click on **Add** button:
 
-    ![Add new tool panel](./pictures/nb_newtool.png){:: style="width:90%;"}
+    ![Add new tool panel](./pictures/nb_newtool.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Then, you should set **Make Command** and **Debugger Command** to point to xds tools:
 
-    ![Add new tool panel](./pictures/nb_xds_options.png){:: style="width:90%;"}
+    ![Add new tool panel](./pictures/nb_xds_options.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Finally click on **OK** button.
 
@@ -187,7 +187,7 @@ __Netbeans 8.x :__
     - Gdb Init File: `target/gdb-on-root@renesas-gen3.ini`
       (_script name may depend of RSYNC_TARGET variable you set in pre-build command_)
 
-    ![Select Model panel](./pictures/nb_project_debug-1.png){:: style="width:90%;"}
+    ![Select Model panel](./pictures/nb_project_debug-1.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Click on **Apply** and then **OK** button to save settings
 

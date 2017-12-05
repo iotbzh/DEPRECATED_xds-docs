@@ -45,13 +45,13 @@ Dashboard. URL depends of your config, for example `http://localhost:8800`
 Open the right sidebar and select `Projects` entry to open project page and then
 create/declare a new project by with the plus icon:
 
-![](./pictures/xds-dashboard-icon-2.png){:: style="margin:auto;"}
+![](./pictures/xds-dashboard-icon-2.png){:: style="margin:auto; display:flex"}
 
 <!-- pagebreak -->
 
 Set `Sharing Type` and paths according to your needs.
 
-![](./pictures/xds-dashboard-prj-1.png){:: style="width:90%;"}
+![](./pictures/xds-dashboard-prj-1.png){:: style="width:90%; max-width:560px; margin:auto; display:flex"}
 
 Note that XDS creates (if not already exists) a file named `xds-project.conf`
 when you declare a new project. This file may be very useful when you plan to
@@ -92,7 +92,7 @@ Open the build page build entry of left sidebar ![](./pictures/xds-dashboard-ico
 then select your **Project** and the **Cross SDK** you want to use and click on
 **Clean / Pre-Build / Build / Populate** buttons to execute various build actions.
 
-![](./pictures/xds-dashboard-prj-2.png){:: style="width:90%;"}
+![](./pictures/xds-dashboard-prj-2.png){:: style="width:90%; max-width:600px; margin:auto; display:flex"}
 
 ## Build from command line
 
@@ -217,11 +217,11 @@ __Netbeans 8.x :__
 - Open menu **Tools** -> **Options**
   - Open **C/C++** tab, in **Build Tools** sub-tab, click on **Add** button:
 
-    ![Add new tool panel](./pictures/nb_newtool.png)
+    ![Add new tool panel](./pictures/nb_newtool.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Then, you should set **Make Command** and **Debugger Command** to point to xds tools:
 
-    ![Add new tool panel](./pictures/nb_xds_options.png)
+    ![Add new tool panel](./pictures/nb_xds_options.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Finally click on **OK** button.
 
@@ -235,13 +235,13 @@ __Netbeans 8.x :__
   **Custom**. Keep **Tool Collection** to **Default GNU** in order to create a
   *native configuration* based on native GNU GCC. Finally click on **Next** button.
 
-    ![Select Model panel](./pictures/nb_new-project-1.png)
+    ![Select Model panel](./pictures/nb_new-project-1.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
 - Just update **Run in Folder** field and add `build_native` suffix so that
   resulting build files will be located into `build_native` sub-directory.
   Keep all others settings to default value and  click on **Next** button.
 
-    ![Select Model panel](./pictures/nb_new-project-2.png)
+    ![Select Model panel](./pictures/nb_new-project-2.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
 - Click several times on **Next button** (always keep default settings) and
   click on **Finish** button to complete creation of native configuration.
@@ -251,7 +251,7 @@ __Netbeans 8.x :__
 
   - in **Build** category, click on **Manage Configurations** button and then **New** button to add a new configuration named for example "Gen3 board"
 
-    ![Select Build category](./pictures/nb_new-project-3.png)
+    ![Select Build category](./pictures/nb_new-project-3.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Click on **Set Active** button
 
@@ -265,13 +265,13 @@ __Netbeans 8.x :__
     - Build Command: `xds-cli exec -c ../xds-project.conf -- make remote-target-populate`
     - Clean Command: `xds-cli exec -c ../xds-project.conf -- make clean`
 
-    ![Select Make sub-category](./pictures/nb_new-project-4.png)
+    ![Select Make sub-category](./pictures/nb_new-project-4.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Select **Run** sub-category, and set:
     - Run Command: `target/start-on-root@renesas-gen3.sh`
     - Run Directory: `build-gen3`
 
-    ![Select Run  sub-category](./pictures/nb_new-project-5.png)
+    ![Select Run  sub-category](./pictures/nb_new-project-5.png){:: style="width:90%; max-width:700px; margin:auto; display:flex"}
 
   - Click on **OK** button to save settings
 
