@@ -2,17 +2,18 @@
 
 ## Prerequisites
 
-- `xds-agent` is running on your machine
-  (see **Installing XDS client tools**  previous chapter)
+- `xds-agent` is running locally on your machine
+  (see previous chapter: [Installing XDS client tools](./1_install-client.md) )
 - `xds-server` is running locally in a docker container or is accessible on your
-  network (see **Installing XDS server** previous chapter)
-- one or more SDK have been installed (see **Installing AGL SDKs** previous chapter)
-- XDS configuration is correct: in other words, all table lines are blue in
-  configuration page of XDS Dashboard.
+  network (see previous chapter: [Installing XDS server](./2_install-xds-server.md))
+- one or more SDK have been installed (see previous chapter: [Installing AGL SDKs](3_install-sdks.md))
+- XDS configuration is correct: in other words, connection is correctly
+  established between `xds-agent` and `xds-server` and no error message is
+  displayed when you open XDS Dashboard in a web browser.
 
 ## Setup
 
-Let's use for example helloworld-native-application, so you need first to clone
+Let's use _helloworld-native-application_ project as example, so you need first to clone
 this project into a directory that will be accessible by `xds-server`.
 Depending of the project sharing method:
 
@@ -20,7 +21,7 @@ Depending of the project sharing method:
 - Path mapping: you must clone project into `$HOME/xds-workspace` directory.
 
 <!-- note -->
-> **Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
+**Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
 project based on [app-templates](https://git.automotivelinux.org/apps/app-templates/)
 (included as a git submodule). This CMake templating, used to develop application
 with the AGL Application Framework, will automatically generate makefile rules
@@ -36,36 +37,59 @@ cd $HOME/xds-workspace
 git clone --recursive https://github.com/iotbzh/helloworld-native-application.git
 ```
 
-### Declare project into XDS
+### Declare project using XDS Dashboard
 
 Use XDS Dashboard to declare your project. Open a browser and connect to XDS
-Dashboard. URL depends of your config, for example `http://localhost:8000`
+Dashboard. URL depends of your config, for example `http://localhost:8800`
 
-Click cog icon ![](./pictures/xds-dashboard-icon-1.png){:: style="display:inline; padding:0;"}
-to open configuration panel and then create/declare a new project by with the
-plus icon
-![](./pictures/xds-dashboard-icon-2.png){:: style="display:inline; padding:0;"}
-of `Projects` bar.
+Open the right sidebar and select `Projects` entry to open project page and then
+create/declare a new project by with the plus icon:
 
-Set `Sharing Type` and paths according to your setup.
+![](./pictures/xds-dashboard-icon-2.png){:: style="margin:auto;"}
+
+<!-- pagebreak -->
+
+Set `Sharing Type` and paths according to your needs.
 
 ![](./pictures/xds-dashboard-prj-1.png){:: style="width:90%;"}
 
-Note that XDS creates a file name `xds-project.conf` (if not already exists)
-when you declare a new project using XDS Dashboard. This file may be very useful
-when you will use XDS client tools such as `xds-exec` (see next chapter).
+Note that XDS creates (if not already exists) a file named `xds-project.conf`
+when you declare a new project. This file may be very useful when you plan to
+use XDS client tools such as `xds-cli` or `xds-gdb`.
 
 <!-- note -->
->**Note:** when you select `Path mapping`, you must clone your project into
-`$HOME/xds-workspace` directory (named "Local Path" in modal window) and
-"Server Path" must be set to `/home/devel/xds-workspace/xxx` where xxx is your
-project directory name. If you select `Cloud Sync`, you can clone your project
-where you want on your local disk.
+**Note:** when `Path mapping` type is selected, you must clone your project into
+`$HOME/xds-workspace` directory (named **Local Path** in modal window).
+
+If XDS server is running in the XDS docker container (see [Installation based on Docker container](./2_install-xds-server.md#installation-based-on-docker-container) ),
+the **Server Path** must be set to `/home/devel/xds-workspace/xxx` where xxx is your
+project directory name.
+
+If you select `Cloud Sync`, you can clone your project wherever you want on
+your local disk.
 <!-- endnote -->
+
+### Declare project from command line
+
+Use XDS command line tool named [xds-cli](./part2/3_xds-cli.md) to declare your
+project from command line and more precisely the `projects add` command
+(short option: `prj add`).
+
+```bash
+xds-cli prj add --label="Project_helloworld-native-application" --type=pm --path=/home/seb/xds-workspace/helloworld-native-application --server-path=/home/devel/xds-workspace/helloworld-native-application
+```
+
+> **Note:** option `--url=http://localhost:1234` may be added to `xds-cli` in
+> order to set url of `xds-agent` in case of agent is not running on default
+> port (for example here, 1234)
+
+<!-- pagebreak -->
 
 ## Build from XDS dashboard
 
-Open the build page (icon ![](./pictures/xds-dashboard-icon-3.png){:: style="display:inline; padding:0;"}), then select your **Project** and the **Cross SDK** you want to use and click on
+Open the build page build entry of left sidebar ![](./pictures/xds-dashboard-icon-3.png){:: style="display:inline; padding:0;"},
+
+then select your **Project** and the **Cross SDK** you want to use and click on
 **Clean / Pre-Build / Build / Populate** buttons to execute various build actions.
 
 ![](./pictures/xds-dashboard-prj-2.png){:: style="width:90%;"}
@@ -74,23 +98,39 @@ Open the build page (icon ![](./pictures/xds-dashboard-icon-3.png){:: style="dis
 
 You need to determine which is the unique id of your project. You can find
 this ID in project page of XDS dashboard or you can get it from command line
-using the `--list` option. This option lists all existing projects ID:
+using `xds-cli` tool and `projects list` command (short: `prj ls`):
 
 ```bash
-xds-exec --list
-
-List of existing projects:
-  CKI7R47-UWNDQC3_myProject
-  CKI7R47-UWNDQC3_test2
-  CKI7R47-UWNDQC3_test3
+xds-cli prj ls
+ID                                       Label                                   LocalPath
+f9904f70-d441-11e7-8c59-3c970e49ad9b     Project_helloworld-service              /home/seb/xds-workspace/helloworld-service
+4021617e-ced0-11e7-acd2-3c970e49ad9b     Project_helloworld-native-application   /home/seb/xds-workspace/helloworld-native-application
 ```
 
-> **Note:** XDS tools, including `xds-exec` are installed by default in `/opt/AGL/bin`
-> directory and this path has been added into your PATH variable.
-> If it is not the case, just add it manually using `export PATH=${PATH}:/opt/AGL/bin` command line.
+XDS tools, including `xds-cli` are installed by default in `/opt/AGL/bin`
+directory and this path has been added into your PATH variable. If it is not the
+case, just add it manually using `export PATH=${PATH}:/opt/AGL/bin` command line.
 
 Now to refer your project, just use --id option or use `XDS_PROJECT_ID`
 environment variable.
+
+<!-- note -->
+**Note:** short id notation is also supported as soon as given id value is non ambiguous.
+For example, to refer to Project_helloworld-native-application project listed
+in above command, you can simply use --id 40 instead of --id 4021617e-ced0-11e7-acd2-3c970e49ad9b
+<!-- endnote -->
+
+You also need to determine the ID of the cross SDK you want to use to cross build
+you application. To list installed SDK, use the following command:
+
+```bash
+xds-cli sdks ls
+List of installed SDKs:
+  ID                                    NAME
+  7aa19224-b769-3463-98b1-4c029d721766  aarch64  (3.99.1+snapshot)
+  41a1efc4-8443-3fb0-afe5-8313e0c96efd  corei7-64  (3.99.2+snapshot)
+  c226821b-b5c0-386d-94fe-19f807946d03  aarch64  (3.99.3)
+```
 
 You are now ready to use XDS to for example cross build your project.
 Here is an example to build a project based on CMakefile:
@@ -101,18 +141,24 @@ cd $MY_PROJECT_DIR
 mkdir build
 
 # Generate build system using cmake
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && cmake ..
+xds-cli exec --id=4021617e --sdkid=c226821b -- "cd build && cmake .."
 
 # Build the project
-xds-exec --id=CKI7R47-UWNDQC3_myProject --sdkid=poky-agl_aarch64_4.0.1 --url=http://localhost:8000 -- cd build && make all
+xds-cli exec --id=4021617e --sdkid=c226821b -- "cd build && make all"
 ```
 
-To avoid to set project id, xds server url, ... at each command line, you can
-define these settings as environment variable within an env file and just set
-`--config` option or source file before executing xds-exec.
+<!-- note -->
+**Note:** If you use `&&`, `||` or `;` statement in the executed command line,
+you need to double quote the command, for example `"cd build && make`.
+<!-- endnote -->
 
-XDS creates a file name `xds-project.conf` (only if not already exists) when you
-declare a new project using XDS Dashboard. Use this file with `--config` option.
+To avoid to set project id, sdks id, url, ... for each command line, you can
+define these settings as environment variables within an env file and just set
+`--config` option or source file before executing xds-cli command.
+
+Note that XDS creates a file named `xds-project.conf` (only if not already exists)
+when you declare a new project using XDS Dashboard (or using `xds-cli prj add...`).
+Edit this file if needed and then refer it with `--config` option.
 
 For example, the equivalence of above command is:
 
@@ -122,30 +168,30 @@ cd $MY_PROJECT_DIR
 
 # Edit and potentially adapt xds-project.conf file that has been created
 # automatically on project declaration using XDS Dashboard
-vi xds-project.conf
+cat xds-project.conf
   # XDS project settings
-  export XDS_SERVER_URL=localhost:8000
-  export XDS_PROJECT_ID=cde3b382-9d3b-11e7_helloworld-native-application
-  export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+  export XDS_AGENT_URL=localhost:8800
+  export XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+  export XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 
 # Create build directory and invoke cmake and then build project
-xds-exec --config xds-project.conf -- "mkdir -p build && cd build && cmake .."
-cd build && xds-exec -- make all
+xds-cli exec --config=./xds-project.conf -- "mkdir -p build && cd build && cmake .."
+cd build && xds-cli exec --config=../xds-project.conf -- "make all"
 
 # Or equivalent by first sourcing conf file (avoid to set --config option)
 source xds-project.conf
-xds-exec -- "mkdir -p build && cd build && cmake .."
-cd build && xds-exec -- make all
+xds-cli exec "mkdir -p build && cd build && cmake .."
+cd build && xds-cli exec "make all"
 ```
 
 <!-- note -->
->**Note:** all parameters after a double dash (--) are considered as the command
-to execute on xds-server.
+**Note:** all parameters after a double dash (--) are considered as the command
+to execute.
 <!-- endnote -->
 
 ## Build from IDE
 
-First create an XDS config file or reuse the previous one, for example we use 
+First create an XDS config file or reuse the previous one, for example we use
 here aarch64 SDK to cross build application for a Renesas Gen3 board.
 
 ```bash
@@ -153,9 +199,9 @@ here aarch64 SDK to cross build application for a Renesas Gen3 board.
 # for example:
 # MY_PROJECT_DIR=/home/seb/xds-workspace/helloworld-native-application
 cat > $MY_PROJECT_DIR/xds-project.conf << EOF
- export XDS_SERVER_URL=localhost:8000
- export XDS_PROJECT_ID=cde3b382-9d3b-11e7_helloworld-native-application
- export XDS_SDK_ID=poky-agl_aarch64_3.99.3
+ export XDS_AGENT_URL=localhost:8800
+ export XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+ export XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 EOF
 ```
 
@@ -211,13 +257,13 @@ __Netbeans 8.x :__
 
   - Select **Pre-Build** sub-category, and set:
     - Working Directory: `build_gen3`
-    - Command Line: `xds-exec -c ../xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ..`
+    - Command Line: `xds-cli exec -c ../xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ..`
     - Pre-build First: `ticked`
 
   - Select **Make** sub-category, and set:
     - Working Directory: `build_gen3`
-    - Build Command: `xds-exec -c ../xds-project.conf -- make remote-target-populate`
-    - Clean Command: `xds-exec -c ../xds-project.conf -- make clean`
+    - Build Command: `xds-cli exec -c ../xds-project.conf -- make remote-target-populate`
+    - Clean Command: `xds-cli exec -c ../xds-project.conf -- make clean`
 
     ![Select Make sub-category](./pictures/nb_new-project-4.png)
 
@@ -266,7 +312,7 @@ AGL helloworld application based on cmake template.
         {
             "taskName": "pre-build",
             "group": "build",
-            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ../",
+            "command": "/opt/AGL/bin/xds-cli exec --rpath build --config xds-project.conf -- cmake -DRSYNC_TARGET=root@renesas-gen3 -DRSYNC_PREFIX=/opt ../",
             "problemMatcher": [
                 "$gcc"
             ]
@@ -274,14 +320,14 @@ AGL helloworld application based on cmake template.
         {
             "taskName": "build",
             "group": "build",
-            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- make widget",
+            "command": "/opt/AGL/bin/xds-cli exec --rpath build --config xds-project.conf -- make widget",
             "problemMatcher": [
                 "$gcc"
             ]
         },
         {
             "taskName": "populate",
-            "command": "/opt/AGL/bin/xds-exec --rpath build --config xds-project.conf -- make widget-target-install",
+            "command": "/opt/AGL/bin/xds-cli exec --rpath build --config xds-project.conf -- make widget-target-install",
             "problemMatcher": []
         }
     ]

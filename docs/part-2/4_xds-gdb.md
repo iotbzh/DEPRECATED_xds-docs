@@ -9,16 +9,16 @@ Two debugging models are supported:
 
 1. native debugging
 
-1. XDS remote debugging requiring an XDS server and allowing cross debug your
-  application.
+1. XDS remote debugging requiring an XDS agent/server setup. That allows you to easily cross debug your application.
 
- By default XDS remote debug is used and you need to define `XDS_NATIVE_GDB`
+ By default XDS debug model is used and you need to define `XDS_NATIVE_GDB`
 variable to use native gdb debug mode instead.
 
-> **SEE ALSO**: [xds-server](https://github.com/iotbzh/xds-server), a web server
+> **SEE ALSO**: [xds-agent](https://github.com/iotbzh/xds-agent), a local agent
+used to interface xds-server.
+> **SEE ALSO**: [xds-server](https://github.com/iotbzh/xds-server), a REST API server
 used to remotely cross build applications.
-> **SEE ALSO**: [xds-exec](https://github.com/iotbzh/xds-exec),
-wrappers on `exec` command that allows to cross build your application through `xds-server`.
+> **SEE ALSO**: [xds-cli](https://github.com/iotbzh/xds-cli), XDS command line tool.
 
 ## Configuration
 
@@ -46,9 +46,9 @@ wrappers on `exec` command that allows to cross build your application through `
 ```bash
 cat $HOME/myProject/xds-gdb.env
 
-export XDS_SERVER_URL=http://xds-docker:8000
-export XDS_PROJECT_ID=IW7B4EE-DBY4Z74_myProject
-export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+export XDS_AGENT_URL=http://localhost:8800
+export XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+export XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 ```
 
 `XDS_LOGLEVEL`
@@ -61,9 +61,9 @@ Set logging file, default `/tmp/xds-gdb.log`.
 
 `XDS_NATIVE_GDB`
 
-Use native gdb mode instead of remote XDS server mode.
+Use native gdb mode instead of XDS mode.
 
-`XDS_PROJECT_ID`  *(mandatory with XDS server mode)*
+`XDS_PROJECT_ID`  *(mandatory in XDS mode)*
 
 Project ID you want to build
 
@@ -71,13 +71,13 @@ Project ID you want to build
 
 Relative path into project
 
-`XDS_SDK_ID`   *(mandatory with XDS server mode)*
+`XDS_SDK_ID`   *(mandatory in XDS mode)*
 
 Cross Sdk ID to use to build project
 
-`XDS_SERVER_URL`    *(mandatory with XDS server mode)*
+`XDS_AGENT_URL`
 
-Remote XDS server url
+Local XDS agent url (default `http://localhost:8800`)
 
 ### Configuration variables set within gdb init command file
 
@@ -88,15 +88,15 @@ You must respect the following syntax: commented line including `:XDS-ENV:` tag
 Example of gdb init file where we define project and sdk ID:
 
 ```bash
-     # :XDS-ENV: XDS_PROJECT_ID=IW7B4EE-DBY4Z74_myProject
-     # :XDS-ENV: XDS_SDK_ID=poky-agl_aarch64_4.0.1
+     # :XDS-ENV: XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+     # :XDS-ENV: XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 ```
 
 ## How to build xds-gdb from scratch
 
 ### Prerequisites
 
- You must install and setup [Go](https://golang.org/doc/install) version 1.7 or
+ You must install and setup [Go](https://golang.org/doc/install) version 1.8.1 or
  higher to compile this tool.
 
 ### Building

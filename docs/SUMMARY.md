@@ -12,5 +12,7 @@
 * [Part 2 - XDS internals](part-2/0_Abstract.md)
   * [xds-server](part-2/1_xds-server.md)
   * [xds-agent](part-2/2_xds-agent.md)
-  * [xds-exec](part-2/3_xds-exec.md)
+  * [xds-cli](part-2/3_xds-cli.md)
   * [xds-gdb](part-2/4_xds-gdb.md)
+  * [xds-exec](part-2/5_xds-exec.md)
+  

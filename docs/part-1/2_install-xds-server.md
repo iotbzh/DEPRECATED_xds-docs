@@ -13,11 +13,11 @@ Several installation types are supported :
 
 | Install type | Supported OS | Section to refer |
 |--------------|--------------|------------------|
-| Container | Linux or MacOS | [see Installation based on Docker container](#docker_container) |
-| Virtual Machine | Linux, MacOS or Windows | [see Installation based on VirtualBox appliance](#vbox_appliance) |
-| Native | Linux | [see Native installation](#native) |
+| Container | Linux or MacOS | [see Installation based on Docker container](#installation-based-on-docker-container) |
+| Virtual Machine | Linux, MacOS or Windows | [see Installation based on VirtualBox appliance](#installation-based-on-virtualbox-appliance) |
+| Native | Linux | [see Native installation](#native-installation) |
 
-## <a name="docker_container"></a> Installation based on Docker container
+## Installation based on Docker container
 
 ### Prerequisites
 
@@ -69,8 +69,8 @@ seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME
 
 `xds-server` is automatically started as a service on container startup.
 
-To check if xds-server is correctly install and running, you can access the web
-interface, what we call the "Dashboard", using a web browser :
+To check if xds-server is correctly install and running, you can access the basic 
+web page that gives you some instructions:
 
 ```bash
 # if container is running on your local host
@@ -79,13 +79,13 @@ seb@laptop ~$ xdg-open http://localhost:8000
 ```
 
 `xds-server` is now up and running, you can now install AGL SDKs, please refer
-to chapter named "Installing AGL SDKs"
+to next chapter named [Installing AGL SDKs](3_install-sdks.md#installing-agl-sdks)
 
 ### Container settings
 
 This container (ID=0) exposes following ports:
 
-- 8000 : `xds-server` to serve XDS Dashboard
+- 8000 : `xds-server` to serve XDS basic web page
 - 69   : TFTP
 - 2222 : ssh
 
@@ -99,17 +99,18 @@ inside and outside docker):
 | $USER_VOLUME | $USER_VOLUME | user path, see `--volume` option of `xds-docker-create-container.sh` script |
 
 <!-- note -->
-Please refer to **part 2 - xds-server** documentation for additional info.
+Please refer to [part 2 - xds-server](../part-2/1_xds-server.md) documentation
+for additional info.
 <!-- endnote -->
 
-## <a name="vbox_appliance"></a> Installation based on VirtualBox appliance
+## Installation based on VirtualBox appliance
 
 _coming soon ..._
 
-## <a name="native"></a> Native installation
+## Native installation
 
 You can chose to install xds-server 'natively' instead of within a docker
-container but only Linux host OSes are supported and tested for native
+container but note that only Linux host OSes are supported and tested for native
 installation !
 
 ### Install packages for debian distro type
@@ -142,7 +143,7 @@ seb@laptop ~$  sudo zypper install agl-xds-server
 ### Configure xds-server
 
 <!-- note -->
->**Optional step**: nothing to do if you keep default settings
+**Optional step**: skip this chapter if you want to use keep default settings
 <!-- endnote -->
 
 When `xds-server` is started as a systemd service, default environment variables
@@ -152,15 +153,14 @@ are set into `/etc/default/xds-server` file.
 and default JSON config is `/etc/xds-server/config.json`.
 
 <!-- note -->
->**Note:** you can use your own JSON config by settings `APP_CONFIG` variable of
-`/etc/default/xds-server` file to your file, for example
-`/home/MYUSER/.xds/server/config.json`
+**Note:** you can use your own JSON config by settings `APP_CONFIG` variable of
+`/etc/default/xds-server` file to your file, for example `/home/MYUSER/.xds/server/config.json`
 <!-- endnote -->
 
 Supported fields in JSON configuration file are :
 
-- **httpPort** : HTTP port of client webapp / dashboard
-- **webAppDir** : location of client dashboard (default: webapp/dist)
+- **httpPort** : HTTP port of client webapp/REST API
+- **webAppDir** : location of client web application (default: webapp/dist)
 - **shareRootDir** : root directory where projects will be copied
 - **logsDir**  : directory to store logs (eg. syncthing output)
 - **sdkRootDir** : root directory where cross SDKs are installed
@@ -208,8 +208,14 @@ seb@laptop ~$ systemctl --user --unit=xds-server.service --output=cat
 ```
 
 To check if xds-server is correctly install and running, you can access the web
-interface, what we call the "Dashboard", using a web browser :
+interface, using a web browser :
 
 ```bash
 seb@laptop ~$ xdg-open http://localhost:8000
+```
+
+or get the current version using the following curl command:
+
+```bash
+seb@laptop ~$ curl http://localhost:8000/api/v1/version
 ```

@@ -1,7 +1,8 @@
 Document revisions
 ==================
 
-| Date        | Version | Designation                          | Author                  |
-|-------------|---------|--------------------------------------|-------------------------|
-| Sept 2017   |   0.1   | Initial release                      | S. Douheret [ Iot.bzh ] |
-| Oct 2017    |   0.2   | Various update to match new behavior | S. Douheret [ Iot.bzh ] |
+| Date        | Version   | Designation                           | Author                  |
+|-------------|-----------|---------------------------------------|-------------------------|
+| Sept 2017   |   0.1     | Initial release                       | S. Douheret [ Iot.bzh ] |
+| Oct 2017    |   0.2     | Various updates to match new behavior | S. Douheret [ Iot.bzh ] |
+| Nov 2017    | 1.0.0-rc1 | Updates to match v1.0.0-rc1 behavior  | S. Douheret [ Iot.bzh ] |

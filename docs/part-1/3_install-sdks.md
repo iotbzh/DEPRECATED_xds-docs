@@ -37,10 +37,10 @@ devel@docker ~$ sudo /opt/AGL/xds/server/xds-utils/install-agl-sdks.sh --arch co
 ```
 
 <!-- warning -->
->**Warning:** due to some limitation, you need for now to restart `xds-server` in
+**Warning:** due to some limitation, you need for now to restart `xds-server` in
 order to make new installed SDK visible/available.
-> ```bash
-> seb@laptop ~$  ssh -p 2222 devel@localhost
-> devel@docker ~$  systemctl --user restart xds-server.service
-> ```
+```bash
+seb@laptop ~$  ssh -p 2222 devel@localhost
+devel@docker ~$  systemctl --user restart xds-server.service
+```
 <!-- endwarning -->

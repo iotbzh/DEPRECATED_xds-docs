@@ -10,15 +10,25 @@ and let user to continue to work as usual (use his favorite editor,
 keep performance while editing/browsing sources).
 
 This powerful and portable webserver (written in [Go](https://golang.org))
-exposes a REST interface over HTTP and also provides a Web dashboard to configure projects and execute _(for now)_ only basics commands.
+exposes a REST interface over HTTP.
 
 `xds-server` uses [Syncthing](https://syncthing.net/) tool to synchronize
 projects files from user machine to build server machine or container.
 
-> **SEE ALSO**: [xds-exec](https://github.com/iotbzh/xds-exec),
-wrappers on `exec` commands that allows you to send commands to `xds-server`
+`xds-server` is commonly running on a build server (within a container or not)
+and [xds-agent](2_xds-agent.md) must run on the developer/user machine in order
+to setup the following connection chain:
+
+```schema
+    developer/user machine  |  build server or container
+ ---------------------------|-----------------------------
+  xds-cli <---> xds-agent <-|-> xds-server
+```
+
+**SEE ALSO**: [xds-cli](https://github.com/iotbzh/xds-cli),
+a command-line tool that allows you to send commands to `xds-agent / xds-server`
 and for example build your application from command-line or from your favorite
-IDE (such as Netbeans or Visual Studio Code) through `xds-server`.
+IDE (such as Netbeans or Visual Studio Code) through `xds-agent <=> xds-server`.
 
 ## How to run
 
@@ -75,18 +85,21 @@ seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME
 
 This container (ID=0) exposes following ports:
 
-- 8000 : `xds-server` to serve XDS Dashboard
+- 8000 : `xds-server` to serve XDS webapp
 - 69   : TFTP
 - 2222 : ssh
 
 #### Manually setup docker user id
 
 <!-- note -->
->**Note:** if you used `xds-docker-create-container.sh` script to create XDS
-> docker container, user uid/gid inside docker has already been changed by this script.
+**Note:** if you used `xds-docker-create-container.sh` script to create XDS
+docker container, user uid/gid inside docker has already been changed by this script.
 <!-- endnote -->
 
-If you plan to **use path-mapping sharing type for your projects**, you need to have the same user id and group id inside and outside docker. By default user and group name inside docker is set `devel` (id `1664`), use following commands to replace id `1664` with your user/group id:
+If you plan to **use path-mapping sharing type for your projects**, you need to
+have the same user id and group id inside and outside docker. By default user
+and group name inside docker is set `devel` (id `1664`), use following commands
+to replace id `1664` with your user/group id:
 
 ```bash
 # Set docker container name to use (usually agl-xds-xxx where xxx is USERNAME@MACHINENAME-IDX-NAME)
@@ -109,11 +122,12 @@ seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "systemctl start autologin"
 seb@laptop ~$ ssh -p 2222 devel@localhost -- "systemctl --user start xds-server"
 ```
 
-## Check if xds-server is running (open XDS Dashboard)
+## Check if xds-server is running (open XDS webapp)
 
 **`xds-server` is automatically started** as a service on container startup.
 
-If the container is running on your localhost, you can access the web interface (what we call the "Dashboard"):
+If the container is running on your localhost, you can access to a basic web
+application:
 
 ```bash
 seb@laptop ~$ xdg-open http://localhost:8000
@@ -182,39 +196,43 @@ devel@docker ~$ sudo /opt/AGL/xds/server/xds-utils/install-agl-sdks.sh --arch co
 
 ```
 
-### XDS Dashboard
+### XDS server REST API and Web application
 
-`xds-server` serves a web-application at [http://localhost:8000](http://localhost:8000)
-when XDS server is running on your host. Just replace `localhost` by the host
-name or ip when XDS server is running on another host. So you can now connect
-your browser to this url and use what we call the **XDS dashboard**.
+`xds-server` exposes a REST API and serves a basic web-application.
+
+REST API based url is `http://localhost:8000/api/v1/` when XDS server is
+running on your host (localhost) and basic web-application is available at
+[http://localhost:8000](http://localhost:8000).
+
+Just replace `localhost` by the host name or ip when `xds-server` is running
+on another host.
 
 ```bash
+# Get version using REST API
+curl http://localhost:8000/api/v1/version
+
+# Open browser and local xds-server web-application
 xdg-open http://localhost:8000
 ```
 
-Then follow instructions provided by this dashboard, knowing that the first time
-you need to download and start `xds-agent` on your local machine.
+Then follow instructions provided on this page to install and start `xds-agent`
+that must run locally on your machine.
 
-To download this tool, just click on download icon in dashboard configuration
-page or download one of `xds-agent` released tarball: [https://github.com/iotbzh/xds-agent/releases](https://github.com/iotbzh/xds-agent/releases).
-
-See also `xds-agent` [README file](https://github.com/iotbzh/xds-agent) for more details.
+See also [xds-agent documentation](2_xds-agent.md) for more details.
 
 ## Build xds-server from scratch
 
 ### Dependencies
 
-- Install and setup [Go](https://golang.org/doc/install) version 1.7 or higher to compile this tool.
+- Install and setup [Go](https://golang.org/doc/install) version 1.8.1 or higher to compile this tool.
 - Install [npm](https://www.npmjs.com/)
-- Install [gulp](http://gulpjs.com/)
 - Install [nodejs](https://nodejs.org/en/)
 
 Ubuntu:
 
 ```bash
  sudo apt-get install golang npm curl git zip unzip
- sudo npm install -g gulp-cli n
+ sudo npm install --global @angular/cli   # Angular Command Line Interface
  # Install LTS version of nodejs
  sudo n lts
 ```
@@ -223,7 +241,7 @@ openSUSE:
 
 ```bash
  sudo zypper install go npm git curl zip unzip
- sudo npm install -g gulp-cli n
+ sudo npm install --global @angular/cli   # Angular Command Line Interface
  # Install LTS version of nodejs
  sudo n lts
 ```
@@ -257,17 +275,18 @@ And to install `xds-server` (by default in `/opt/AGL/xds/server`):
 ```
 
 <!-- warning -->
->**Warning:** makefile install rule and default values in configuration file are set
-> to fit the docker setup, so you may need to adapt some settings when you want to install
-> xds-server natively.
+**Warning:** makefile install rule and default values in configuration file are set
+to fit the docker setup, so you may need to adapt some settings when you want to install
+xds-server natively.
 <!-- endwarning -->
 
 <!-- note -->
->**Note:** Used `DESTDIR` to specify another install directory
->
->```bash
->make install DESTDIR=$HOME/opt/xds-server
->```
+**Note:** Used `DESTDIR` to specify another install directory
+
+```bash
+make install DESTDIR=$HOME/opt/xds-server
+```
+
 <!-- endnote -->
 
 #### XDS docker image
@@ -298,8 +317,8 @@ Here is the logic to determine which `config.json` file will be used:
 Supported fields in configuration file are (all fields are optional and example
 below corresponds to the default values):
 
-- **httpPort** : HTTP port of client webapp / dashboard
-- **webAppDir** : location of client dashboard (default: webapp/dist)
+- **httpPort** : HTTP port of client webapp/REST API
+- **webAppDir** : location of client web application (default: webapp/dist)
 - **shareRootDir** : root directory where projects will be copied
 - **logsDir**  : directory to store logs (eg. syncthing output)
 - **sdkRootDir** : root directory where cross SDKs are installed
@@ -330,14 +349,15 @@ below corresponds to the default values):
 
 ### XDS server architecture
 
-The server part is written in *Go* and web app / dashboard (client part) in
-*Angular2*.
+The server part is written in *Go* and web app (basic HTML) in *Angular4*.
 
 ```bash
 |
 +-- bin/                where xds-server binary file will be built
 |
-+-- agent-config.json.in      example of config.json file
++-- conf.d              Linux configuration and startup files (systemd user service)
+|
++-- config.json.in      example of config.json file
 |
 +-- glide.yaml          Go package dependency file
 |
@@ -355,7 +375,7 @@ The server part is written in *Go* and web app / dashboard (client part) in
 |
 +-- vendor/             temporary directory to hold Go dependencies packages
 |
-+-- webapp/             source client dashboard (Angular2 app)
++-- webapp/             source client basic web application
 ```
 
 Visual Studio Code launcher settings can be found into `.vscode/launch.json`.

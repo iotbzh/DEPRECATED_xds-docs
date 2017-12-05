@@ -2,17 +2,30 @@
 
 [xds-agent](https://github.com/iotbzh/xds-agent) is a client tool that must run
 on your machine (user / developer host) to be able to use XDS.
+You should establish the following chain:
 
-Installation of other XDS client tools, such as `xds-exec` or `xds-gdb` is
+
+Client (eg. `xds-cli` or XDS Dashboard) and `xds-agent` is running on your machine
+and `xds-server` is running on a remote server and/or in a container.
+Exchanges between these 3 tools are done though HTTP and Websocket protocols
+and default url/port mentioned in schema below can be change using config files.
+
+![XDS blocks chain](./pictures/xds-block-chain.png)
+
+Installation of other XDS client tools, such as `xds-cli` or `xds-gdb` is
 optional and depends of what you want to do :
 
-- [xds-exec](https://github.com/iotbzh/xds-exec) : command line tool to interact with XDS (also used by IDE integration).
+- [xds-cli](https://github.com/iotbzh/xds-cli) : command line tool to used to interact with XDS (also used by IDE integration).
 - [xds-gdb](https://github.com/iotbzh/xds-gdb) : requested for debugging application.
+
+> [xds-exec](https://github.com/iotbzh/xds-exec) is another tool used to interact
+> with XDS before that `xds-cli` exists. `xds-exec` is deprecated and you should
+> now use `xds-cli exec` command instead.
 
 ## Install packages for debian distro type
 
 ```bash
-# 'DISTRO' can be set to { xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04, Debian_8.0, Debian_9.0}
+# 'DISTRO' can be set to { xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04, Debian_8.0, Debian_9.0 }
 seb@laptop ~$  export DISTRO="xUbuntu_16.04"
 
 seb@laptop ~$  wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
@@ -22,7 +35,7 @@ EOF"
 
 seb@laptop ~$  sudo apt-get update
 seb@laptop ~$  sudo apt-get install agl-xds-agent
-seb@laptop ~$  sudo apt-get install agl-xds-exec
+seb@laptop ~$  sudo apt-get install agl-xds-cli
 seb@laptop ~$  sudo apt-get install agl-xds-gdb
 ```
 
@@ -36,7 +49,7 @@ seb@laptop ~$  sudo zypper ar http://download.opensuse.org/repositories/isv:/Lin
 
 seb@laptop ~$  sudo zypper ref
 seb@laptop ~$  sudo zypper install agl-xds-agent
-seb@laptop ~$  sudo zypper install agl-xds-exec
+seb@laptop ~$  sudo zypper install agl-xds-cli
 seb@laptop ~$  sudo zypper install agl-xds-gdb
 ```
 
@@ -54,7 +67,7 @@ seb@laptop ~$  sudo zypper install agl-xds-gdb
     `setx path "C:\AGK\xds\xds-agent;%path%"`
 
 - repeat the previous steps to install other tools depending of your needs:
-  - `xds-exec` : requested for command line and IDE integration. ([released tarball link](https://github.com/iotbzh/xds-exec/releases)).
+  - `xds-cli` : requested for command line and IDE integration. ([released tarball link](https://github.com/iotbzh/xds-cli/releases)).
   - `xds-gdb` : requested for debugging application. ([released tarball link](https://github.com/iotbzh/xds-gdb/releases)).
 
 ## Start xds-agent

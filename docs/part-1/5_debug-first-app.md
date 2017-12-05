@@ -1,21 +1,17 @@
 # Debug your first AGL application
 
-Debug is based on gdb and you need to use `xds-gdb` as a wrapper on gdb to cross-debug your application.
-This tool allows you to debug an application built with an xds-server without the need to install gdb or any cross tool.
+Debug is based on gdb and you need to use `xds-gdb` as a wrapper on gdb to
+cross-debug your application. This tool allows you to debug an application built
+with XDS without the need to install gdb or any cross tools.
+
 Two debugging models are supported:
 
 1. native debugging
 
-1. XDS remote debugging requiring an XDS server and allowing cross debug your
-  application.
+1. XDS remote debugging requiring an XDS agent/server setup and that allows you to cross debug your application.
 
- By default XDS remote debug is used and you need to define `XDS_NATIVE_GDB`
+By default XDS debug model is used and you need to define `XDS_NATIVE_GDB`
 variable to use native gdb debug mode instead.
-
-> **SEE ALSO**: [xds-server](https://github.com/iotbzh/xds-server), a web server
-used to remotely cross build applications.
-> **SEE ALSO**: [xds-exec](https://github.com/iotbzh/xds-exec),
-wrappers on `exec` command that allows to cross build your application through `xds-server`.
 
 ## Configuration
 
@@ -44,9 +40,9 @@ wrappers on `exec` command that allows to cross build your application through `
 # for example:
 # MY_PROJECT_DIR=/home/seb/xds-workspace/helloworld-native-application
 cat > $MY_PROJECT_DIR/xds-gen3.conf << EOF
-export XDS_SERVER_URL=http://docker:8000
-export XDS_PROJECT_ID=IW7B4EE-DBY4Z74_myProject
-export XDS_SDK_ID=poky-agl_aarch64_4.0.1
+export XDS_AGENT_URL=localhost:8800
+export XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+export XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 EOF
 ```
 
@@ -60,9 +56,9 @@ Set logging file, default `/tmp/xds-gdb.log`.
 
 `XDS_NATIVE_GDB`
 
-Use native gdb mode instead of remote XDS server mode.
+Use native gdb mode instead of remote XDS mode.
 
-`XDS_PROJECT_ID`  *(mandatory with XDS server mode)*
+`XDS_PROJECT_ID`  *(mandatory in XDS mode)*
 
 Project ID you want to build
 
@@ -70,13 +66,13 @@ Project ID you want to build
 
 Relative path into project
 
-`XDS_SDK_ID`   *(mandatory with XDS server mode)*
+`XDS_SDK_ID`   *(mandatory in XDS mode)*
 
 Cross Sdk ID to use to build project
 
-`XDS_SERVER_URL`    *(mandatory with XDS server mode)*
+`XDS_AGENT_URL`
 
-Remote XDS server url
+Local XDS agent url (default `http://localhost:8800`)
 
 ### Configuration variables set within gdb init command file
 
@@ -87,8 +83,8 @@ You must respect the following syntax: commented line including `:XDS-ENV:` tag
 Example of gdb init file where we define project and sdk ID:
 
 ```bash
-     # :XDS-ENV: XDS_PROJECT_ID=IW7B4EE-DBY4Z74_myProject
-     # :XDS-ENV: XDS_SDK_ID=poky-agl_aarch64_4.0.1
+     # :XDS-ENV: XDS_PROJECT_ID=4021617e-ced0-11e7-acd2-3c970e49ad9b
+     # :XDS-ENV: XDS_SDK_ID=c226821b-b5c0-386d-94fe-19f807946d03
 ```
 
 ## Using xds-gdb from command line
@@ -96,16 +92,16 @@ Example of gdb init file where we define project and sdk ID:
 ### XDS remote debugging mode
 
 First the project you want to debug must be declared on an xds-server and this
-project may also has been built using this xds-server (see [xds-server](https://github.com/iotbzh/xds-server) for more details).
+project may also has been built using using XDS (see [Create your first AGL application](./4_build-first-app.md) for more details).
 
-So to debug it you need to know the xds-server url (eg. <http://docker:8000>),
+So to debug it you need to have the XDS agent - server chain in place and
 you also need the project and sdk unique id. You can find these IDs in project
 page of XDS dashboard or you can get them from command line using the `--list`
 option.
 This option lists all existing projects ID:
 
 ```bash
-XDS_SERVER_URL=http://docker:8000 xds-gdb --list
+xds-gdb --list
 ```
 
 Now to refer your project, just set `XDS_PROJECT_ID` and `XDS_SDK_ID` variables.
@@ -125,28 +121,28 @@ cd helloworld-service
 
 # Define XDS config
 cat <<EOF >./xds-config.env
-XDS_SERVER_URL=http://docker:8000
+#optional if not default value: XDS_AGENT_URL=http://localhost:8800
 XDS_PROJECT_ID=IW7B4EE-DBY4Z74_myProject
 XDS_SDK_ID=poky-agl_aarch64_4.0.1
 EOF
 
-# Tell to xds-exec and xds-gdb which is your config file
+# Tell to xds-cli and xds-gdb which is your config file
 export XDS_CONFIG=../xds-gen3.conf
 
 # Create a new build directory
 mkdir build && cd build
 
 # Start remote cross build
-xds-exec -- cmake -DRSYNC_TARGET=root@myTarget ..
-xds-exec -- make
-xds-exec -- make remote-target-populate
+xds-cli exec -- cmake -DRSYNC_TARGET=root@myTarget ..
+xds-cli exec -- make
+xds-cli exec -- make remote-target-populate
 
 # Start debugging
 xds-gdb -x target/gdb-on-root@myTarget.ini
 ```
 
 <!-- note -->
-> **Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
+**Note:** : [helloworld-native-application](https://github.com/iotbzh/helloworld-native-application) project is an AGL
 project based on [app-templates](https://git.automotivelinux.org/apps/app-templates/)
 (included as a git submodule). This CMake templating, used to develop application
 with the AGL Application Framework, will automatically generate makefile rules
