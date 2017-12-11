@@ -305,14 +305,14 @@ make build FLAVOUR=xds
 
 ### Configuration
 
-`xds-server` configuration is driven by a JSON config file (`config.json`).
+`xds-server` configuration is driven by a JSON config file (`server-config.json`).
 
-Here is the logic to determine which `config.json` file will be used:
+Here is the logic to determine which `server-config.json` file will be used:
 
 1. from command line option: `--config myConfig.json`
-1. `$HOME/.xds-server/config.json` file
-1. `/etc/xds-server/config.json` file
-1. `<xds-server executable dir>/config.json` file
+1. `$HOME/.xds/server/server-config.json` file
+1. `/etc/xds/server/server-config.json` file
+1. `<xds-server executable dir>/server-config.json` file
 
 Supported fields in configuration file are (all fields are optional and example
 below corresponds to the default values):
@@ -331,12 +331,12 @@ below corresponds to the default values):
 {
     "httpPort": 8000,
     "webAppDir": "webapp/dist",
-    "shareRootDir": "${HOME}/.xds-server/projects",
+    "shareRootDir": "${HOME}/.xds/server/projects",
     "logsDir": "/tmp/logs",
     "sdkRootDir": "/xdt/sdk",
     "syncthing": {
         "binDir": "./bin",
-        "home": "${HOME}/.xds-server/syncthing-config",
+        "home": "${HOME}/.xds/server/syncthing-config",
         "gui-address": "http://localhost:8385",
         "gui-apikey": "123456789",
     }
@@ -356,8 +356,6 @@ The server part is written in *Go* and web app (basic HTML) in *Angular4*.
 +-- bin/                where xds-server binary file will be built
 |
 +-- conf.d              Linux configuration and startup files (systemd user service)
-|
-+-- config.json.in      example of config.json file
 |
 +-- glide.yaml          Go package dependency file
 |

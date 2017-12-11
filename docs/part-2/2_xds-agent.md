@@ -18,7 +18,7 @@ Here is the logic to determine which conf file will be used:
 
 1. from command line option: `--config myConfig.json`
 1. `$HOME/.xds/agent/agent-config.json` file
-1. `/etc/xds-agent/config.json` file
+1. `/etc/xds/agent/agent-config.json` file
 
 Supported fields in configuration file are (all fields are optional and example
 below corresponds to the default values):

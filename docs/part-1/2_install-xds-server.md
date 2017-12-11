@@ -149,12 +149,12 @@ seb@laptop ~$  sudo zypper install agl-xds-server
 When `xds-server` is started as a systemd service, default environment variables
 are set into `/etc/default/xds-server` file.
 
-`xds-server` configuration is also driven by a JSON config file (`config.json`),
-and default JSON config is `/etc/xds-server/config.json`.
+`xds-server` configuration is also driven by a JSON config file (`server-config.json`),
+and default JSON config is `/etc/xds/server/server-config.json`.
 
 <!-- note -->
 **Note:** you can use your own JSON config by settings `APP_CONFIG` variable of
-`/etc/default/xds-server` file to your file, for example `/home/MYUSER/.xds/server/config.json`
+`/etc/default/xds-server` file to your file, for example `/home/MYUSER/.xds/server/server-config.json`
 <!-- endnote -->
 
 Supported fields in JSON configuration file are :
@@ -175,12 +175,12 @@ All fields are optional and example below corresponds to the default values:
 {
     "httpPort": 8000,
     "webAppDir": "webapp/dist",
-    "shareRootDir": "${HOME}/.xds-server/projects",
+    "shareRootDir": "${HOME}/.xds/server/projects",
     "logsDir": "/tmp/logs",
     "sdkRootDir": "/xdt/sdk",
     "syncthing": {
         "binDir": "./bin",
-        "home": "${HOME}/.xds-server/syncthing-config",
+        "home": "${HOME}/.xds/server/syncthing-config",
         "gui-address": "http://localhost:8385",
         "gui-apikey": "123456789",
     }
