@@ -69,7 +69,7 @@ seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME
 
 `xds-server` is automatically started as a service on container startup.
 
-To check if xds-server is correctly install and running, you can access the basic 
+To check if xds-server is correctly install and running, you can access the basic
 web page that gives you some instructions:
 
 ```bash
@@ -143,7 +143,7 @@ seb@laptop ~$  sudo zypper install agl-xds-server
 ### Configure xds-server
 
 <!-- note -->
-**Optional step**: skip this chapter if you want to use keep default settings
+**Optional step**: skip this chapter if you plan to use default settings
 <!-- endnote -->
 
 When `xds-server` is started as a systemd service, default environment variables
@@ -163,7 +163,7 @@ Supported fields in JSON configuration file are :
 - **webAppDir** : location of client web application (default: webapp/dist)
 - **shareRootDir** : root directory where projects will be copied
 - **logsDir**  : directory to store logs (eg. syncthing output)
-- **sdkRootDir** : root directory where cross SDKs are installed
+- **sdkScriptsDir** : directory where scripts, used to managed SDKs, are installed
 - **syncthing.binDir** : syncthing binaries directory (default: executable directory)
 - **syncthing.home"** : syncthing home directory (usually .../syncthing-config)
 - **syncthing.gui-address** : syncthing gui url (default <http://localhost:8385>)
@@ -177,7 +177,7 @@ All fields are optional and example below corresponds to the default values:
     "webAppDir": "webapp/dist",
     "shareRootDir": "${HOME}/.xds/server/projects",
     "logsDir": "/tmp/logs",
-    "sdkRootDir": "/xdt/sdk",
+    "sdkScriptsDir": "${EXEPATH}/scripts/sdks",
     "syncthing": {
         "binDir": "./bin",
         "home": "${HOME}/.xds/server/syncthing-config",
