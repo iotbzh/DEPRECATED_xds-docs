@@ -4,7 +4,6 @@
 on your machine (user / developer host) to be able to use XDS.
 You should establish the following chain:
 
-
 Client (eg. `xds-cli` or XDS Dashboard) and `xds-agent` is running on your machine
 and `xds-server` is running on a remote server and/or in a container.
 Exchanges between these 3 tools are done though HTTP and Websocket protocols
@@ -62,8 +61,9 @@ seb@laptop ~$  sudo zypper install agl-xds-gdb
   1. Then unzip the tarball any where into your local disk (for example: `/opt/AGL/xds` or `C:\AGL\xds`).
 
   1. Add binary to PATH:
-    - MacOs: create the .bash_profile `nano .bash_profile` and add `export PATH="/opt/AGL/xds/xds-agent:$PATH`
-    - Windows: change the system path via control panel or system settings or
+
+      - MacOs: create the .bash_profile `nano .bash_profile` and add `export PATH="/opt/AGL/xds/xds-agent:$PATH`
+      - Windows: change the system path via control panel or system settings or
     `setx path "C:\AGK\xds\xds-agent;%path%"`
 
 - repeat the previous steps to install other tools depending of your needs:

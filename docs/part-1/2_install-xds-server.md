@@ -103,9 +103,75 @@ Please refer to [part 2 - xds-server](../part-2/1_xds-server.md) documentation
 for additional info.
 <!-- endnote -->
 
-## Installation based on VirtualBox appliance
+## Installation based on Virtual Machine appliance
 
-_coming soon ..._
+### Prerequisites
+
+> VirtualBox is installed on the host machine
+
+please refer to [VirtualBox documentation](https://www.virtualbox.org/wiki/Downloads) for more details.
+
+### Get the appliance
+
+Load the pre-build AGL SDK appliance image including `xds-server`:
+
+```bash
+wget http://iot.bzh/download/public/XDS/appliance/xds-vm-debian9_latest.ova
+```
+
+### Clean old appliance
+
+You must have one and one xds appliance only.
+
+So, at first remove the oldest xds appliance.
+
+```bash
+#Get the virtual machine name
+VDS_VMNAME=$(VBoxManage list vms | grep xds-vm-debian | cut -d "\"" -f2)
+echo ${VDS_VMNAME}
+
+#Remove old XDS appliance
+[ -n ${VDS_VMNAME} ] && VBoxManage unregistervm ${VDS_VMNAME} --delete
+```
+
+### Create and start a new appliance
+
+Use provided script to create a new appliance or you can use the UI of VirtualBox:
+
+```bash
+# Import image into VirtualBox
+VBoxManage import ./xds-vm-debian9_latest.ova
+
+# Check import result
+VDS_VMNAME=$(VBoxManage list vms | grep xds-vm-debian | cut -d "\"" -f2)
+echo ${VDS_VMNAME}
+
+# Start XDS appliance
+[ -n ${VDS_VMNAME} ] && VBoxManage startvm ${VDS_VMNAME}
+```
+
+### Appliance settings
+
+This container (ID=0) exposes following ports:
+
+- 8000 : `xds-server` to serve XDS basic web page
+- 69   : TFTP
+- 2222 : ssh
+
+## Check if xds-server is running
+
+`xds-server` is automatically started as a service on container startup.
+
+To check if xds-server is correctly install and running, you can access the basic web page that gives you some instructions:
+
+```bash
+# if container/appliance is running on your local host
+# (else replace localhost by the name or the ip of the machine running the container)
+seb@laptop ~$ xdg-open http://localhost:8000
+```
+
+`xds-server` is now up and running, you can now install AGL SDKs, please refer
+to next chapter named [Installing AGL SDKs](3_install-sdks.md#installing-agl-sdks)
 
 ## Native installation
 

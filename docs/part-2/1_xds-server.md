@@ -44,7 +44,7 @@ been integrated into AGL SDK docker container.
 Load the pre-build AGL SDK docker image including `xds-server`:
 
 ```bash
-seb@laptop ~$ wget -O - http://iot.bzh/download/public/2017/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
+wget -O - http://iot.bzh/download/public/2017/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
 ```
 
 ### List container
@@ -53,7 +53,7 @@ You should get `docker.automotivelinux.org/agl/worker-xds:X.Y` image
 
 ```bash
 # List image that we just built
-seb@laptop ~$ docker images | grep worker-xds
+docker images | grep worker-xds
 
 docker.automotivelinux.org/agl/worker-xds       3.99.1              786d65b2792c        6 days ago          602MB
 ```
@@ -64,13 +64,13 @@ Use provided script to create a new docker image and start a new container:
 
 ```bash
 # Get script
-seb@laptop ~$ wget https://raw.githubusercontent.com/iotbzh/xds-server/master/scripts/xds-docker-create-container.sh
+wget https://raw.githubusercontent.com/iotbzh/xds-server/master/scripts/xds-docker-create-container.sh
 
 # Create new XDS worker container
-seb@laptop ~$ bash ./xds-docker-create-container.sh
+bash ./xds-docker-create-container.sh
 
 # Check that new container is running
-seb@laptop ~$ docker ps | grep worker-xds
+docker ps | grep worker-xds
 
 b985d81af40c        docker.automotivelinux.org/agl/worker-xds:3.99.1       "/usr/bin/wait_for..."   6 days ago           Up 4 hours          0.0.0.0:8000->8000/tcp, 0.0.0.0:69->69/udp, 0.0.0.0:10809->10809/tcp, 0.0.0.0:2222->22/tcp    agl-xds-seb@laptop-0-seb
 ```
@@ -80,7 +80,7 @@ to use for example with Path-Mapping folder type.
 
 ```bash
 # Create new XDS worker container and share extra '$HOME/my-workspace' directory
-seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
+bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
 ```
 
 This container (ID=0) exposes following ports:
@@ -103,23 +103,23 @@ to replace id `1664` with your user/group id:
 
 ```bash
 # Set docker container name to use (usually agl-xds-xxx where xxx is USERNAME@MACHINENAME-IDX-NAME)
-seb@laptop ~$ export CONTAINER_NAME=agl-xds-seb@laptop-0-seb
+export CONTAINER_NAME=agl-xds-seb@laptop-0-seb
 
 # First kill all processes of devel user (including running xds-server)
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "/bin/loginctl kill-user devel"
+docker exec ${CONTAINER_NAME} bash -c "/bin/loginctl kill-user devel"
 
 # Change user and group id inside docker to match your ids
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "usermod -u $(id -u) devel"
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "groupmod -g $(id -g) devel"
+docker exec ${CONTAINER_NAME} bash -c "usermod -u $(id -u) devel"
+docker exec ${CONTAINER_NAME} bash -c "groupmod -g $(id -g) devel"
 
 # Update some files ownership
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "chown -R devel:devel /home/devel /tmp/xds*"
+docker exec ${CONTAINER_NAME} bash -c "chown -R devel:devel /home/devel /tmp/xds*"
 
 # Restart devel autologin service
-seb@laptop ~$ docker exec ${CONTAINER_NAME} bash -c "systemctl start autologin"
+docker exec ${CONTAINER_NAME} bash -c "systemctl start autologin"
 
 # Restart xds-server as a service (ssh port 2222 may depend on your container ID)
-seb@laptop ~$ ssh -p 2222 devel@localhost -- "systemctl --user start xds-server"
+ssh -p 2222 devel@localhost -- "systemctl --user start xds-server"
 ```
 
 ## Check if xds-server is running (open XDS webapp)
@@ -130,14 +130,14 @@ If the container is running on your localhost, you can access to a basic web
 application:
 
 ```bash
-seb@laptop ~$ xdg-open http://localhost:8000
+xdg-open http://localhost:8000
 ```
 
 If needed you can status / stop / start  it manually using following commands:
 
 ```bash
 # Log into docker container
-seb@laptop ~$ ssh -p 2222 devel@localhost
+ssh -p 2222 devel@localhost
 
 # Status XDS server:
 devel@docker ~$ systemctl --user status xds-server.service
@@ -168,7 +168,7 @@ For example to control log level, just set LOG_LEVEL env variable knowing that
 supported *level* are: panic, fatal, error, warn, info, debug.
 
 ```bash
-seb@laptop ~$ ssh -p 2222 devel@localhost
+ssh -p 2222 devel@localhost
 devel@docker ~$ echo 'LOG_LEVEL=debug' | sudo tee --append /etc/default/xds-server > /dev/null
 devel@docker ~$ systemctl --user restart xds-server.service
 devel@docker ~$ tail -f /tmp/xds-server/logs/xds-server.log
