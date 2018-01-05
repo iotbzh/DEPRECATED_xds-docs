@@ -5,8 +5,8 @@
     "keywords": "AGL, XDS, cross, Development, Iotbzh",
     "author": "Sebastien Douheret",
     "website": "http://iot.bzh",
-    "published": "November 2017",
-    "version": "1.0.0-rc1",
+    "published": "January 2018",
+    "version": "1.0.0",
 
     "gitbook": "3.2.2",
     "root": "docs",

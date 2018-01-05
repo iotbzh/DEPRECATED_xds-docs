@@ -44,7 +44,7 @@ been integrated into AGL SDK docker container.
 Load the pre-build AGL SDK docker image including `xds-server`:
 
 ```bash
-wget -O - http://iot.bzh/download/public/2017/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
+wget -O - http://iot.bzh/download/public/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
 ```
 
 ### List container
@@ -235,19 +235,20 @@ Used `sdks` command of `xds-cli` tool to managed SDKs.
 xds-cli sdks ls -a
 
 List of available SDKs:
-  ID            NAME                                            STATUS          VERSION         ARCH
-  ec15afe0      AGL-release-eel-4.99.4-raspberrypi3             Not Installed   4.99.4          armv7vehf-neon-vfpv4
-  944d2d5a      AGL-snapshots-master-latest-intel-corei7-64     Not Installed   4.99.3+snapshot corei7-64
-  cf3a4365      AGL-release-dab-4.0.2-qemux86-64                Not Installed   4.0.2           corei7-64
-  d65fe750      AGL-release-eel-latest-qemux86-64               Not Installed   4.99.3          corei7-64
-  a0ae663d      poky-agl-corei7-64-3.99.1+snapshot              Installed       3.99.1+snapshot corei7-64
-  87f0400b      AGL-release-dab-3.99.3-m3ulcb-nogfx             Installed       3.99.3          aarch64
-  8c2f2841      AGL-release-dab-4.0.2-dragonboard-410c          Not Installed   4.0.2           aarch64
+ID            NAME                                            STATUS          VERSION         ARCH
+ec15afe0      AGL-release-eel-4.99.4-raspberrypi3             Not Installed   4.99.4          armv7vehf-neon-vfpv4
+944d2d5a      AGL-snapshots-master-latest-intel-corei7-64     Not Installed   4.99.3+snapshot corei7-64
+cf3a4365      AGL-release-dab-4.0.2-qemux86-64                Not Installed   4.0.2           corei7-64
+d65fe750      AGL-release-eel-latest-qemux86-64               Not Installed   4.99.3          corei7-64
+a0ae663d      poky-agl-corei7-64-3.99.1+snapshot              Installed       3.99.1+snapshot corei7-64
+87f0400b      AGL-release-dab-3.99.3-m3ulcb-nogfx             Installed       3.99.3          aarch64
+8c2f2841      AGL-release-dab-4.0.2-dragonboard-410c          Not Installed   4.0.2           aarch64
 ...
 
 # Install a SDK (downloaded + install)
 xds-cli sdks install d65fe750
-Installation of 'AGL-release-eel-latest-qemux86-64' SDK (id d65fe750-d3a7-38f5-83d8-3d3806054f8d) successfully started.
+
+Installation of 'AGL-release-eel-latest-qemux86-64' SDK successfully started.
 Downloading poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-corei7-64-toolchain-4.99.5.sh ...
 --2018-01-02 11:22:23--  https://download.automotivelinux.org/AGL/release/eel/latest/qemux86-64/deploy/sdk/poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-corei7-64-toolchain-4.99.5.sh
 Resolving download.automotivelinux.org (download.automotivelinux.org)... 199.19.213.77
@@ -259,7 +260,6 @@ Saving to: ‘/tmp/tmp.wuQzLdImCS/poky-agl-glibc-x86_64-agl-demo-platform-crosss
      0K .......... .......... .......... .......... ..........  0% 82,7K 2h11m
     50K .......... .......... .......... .......... ..........  0% 89,1K 2h6m
    100K .......... .......... .......... .......... ..........  0% 82,0K 2h8m
-   150K .......... .......... .......... .......... ..........  0% 66,7K 2h16m
 ...
  50300K .......... .......... .......... .......... .......... 99% 2,15M 0s
  650350K .......... .......... .......... .......              100% 4,04M=10m35s
@@ -274,6 +274,8 @@ Setting it up...done
 SDK has been successfully set up and is ready to be used.
 Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
  $ . /xdt/sdk/poky-agl/4.99.5/corei7-64/environment-setup-corei7-64-agl-linux
+
+SDK ID d65fe750-d3a7-38f5-83d8-3d3806054f8d successfully installed.
 
 
 # Abort an installation that is in progress
@@ -330,7 +332,8 @@ SDK ID d65fe750-d3a7-38f5-83d8-3d3806054f8d successfully deleted.
 #### Un-install a SDK from XDS Dashboard
 
 Open XDS-Dashboard in web-browser and select `SDKs` entry in left side menu.
-If needed, switch to `BASIC SDKS VIEW` view :
+If needed, switch to `BASIC SDKS VIEW` view and click on trash icon located
+in the top-right corner of SDK card.
 
 ### XDS server REST API and Web application
 

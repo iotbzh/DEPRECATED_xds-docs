@@ -14,7 +14,7 @@ Several installation types are supported :
 | Install type | Supported OS | Section to refer |
 |--------------|--------------|------------------|
 | Container | Linux or MacOS | [see Installation based on Docker container](#installation-based-on-docker-container) |
-| Virtual Machine | Linux, MacOS or Windows | [see Installation based on VirtualBox appliance](#installation-based-on-virtualbox-appliance) |
+| Virtual Machine | Linux, MacOS or Windows | [see Installation based on VirtualBox appliance](#installation-based-on-virtual-machine-appliance) |
 | Native | Linux | [see Native installation](#native-installation) |
 
 ## Installation based on Docker container
@@ -28,14 +28,14 @@ Docker is installed on the host machine, please refer to [Docker documentation](
 Load the pre-build AGL SDK docker image including `xds-server`:
 
 ```bash
-seb@laptop ~$ wget -O - http://iot.bzh/download/public/2017/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
+wget -O - http://iot.bzh/download/public/XDS/docker/docker_agl_worker-xds-latest.tar.xz | docker load
 ```
 
 You should get `docker.automotivelinux.org/agl/worker-xds:X.Y` image
 
 ```bash
 # List image that we just load
-seb@laptop ~$ docker images "docker.automotivelinux.org/agl/worker-xds*"
+docker images "docker.automotivelinux.org/agl/worker-xds*"
 
 docker.automotivelinux.org/agl/worker-xds       4.0              786d65b2792c        6 days ago          654MB
 ```
@@ -46,13 +46,13 @@ Use provided script to create a new docker container and start it:
 
 ```bash
 # Get script
-seb@laptop ~$ wget https://raw.githubusercontent.com/iotbzh/xds-server/master/scripts/xds-docker-create-container.sh
+wget https://raw.githubusercontent.com/iotbzh/xds-server/master/scripts/xds-docker-create-container.sh
 
 # Create new XDS worker container
-seb@laptop ~$ bash ./xds-docker-create-container.sh
+bash ./xds-docker-create-container.sh
 
 # Check that new container is running
-seb@laptop ~$ docker ps | grep worker-xds
+docker ps | grep worker-xds
 
 b985d81af40c        docker.automotivelinux.org/agl/worker-xds:3.99.1       "/usr/bin/wait_for..."   6 days ago           Up 4 hours          0.0.0.0:8000->8000/tcp, 0.0.0.0:69->69/udp, 0.0.0.0:10809->10809/tcp, 0.0.0.0:2222->22/tcp    agl-xds-seb@laptop-0-seb
 ```
@@ -62,7 +62,7 @@ to use for example with Path-Mapping folder type.
 
 ```bash
 # Create new XDS worker container and share extra '$HOME/my-workspace' directory
-seb@laptop ~$ bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
+bash ./xds-docker-create-container.sh --volume /my-workspace:$HOME/my-workspace
 ```
 
 ### Check if xds-server is running
@@ -75,7 +75,7 @@ web page that gives you some instructions:
 ```bash
 # if container is running on your local host
 # (else replace localhost by the name or the ip of the machine running the container)
-seb@laptop ~$ xdg-open http://localhost:8000
+xdg-open http://localhost:8000
 ```
 
 `xds-server` is now up and running, you can now install AGL SDKs, please refer
@@ -99,7 +99,7 @@ inside and outside docker):
 | $USER_VOLUME | $USER_VOLUME | user path, see `--volume` option of `xds-docker-create-container.sh` script |
 
 <!-- note -->
-Please refer to [part 2 - xds-server](../part-2/1_xds-server.md) documentation
+Please refer to [part 2 - xds-server](../part-2/1_xds-server.md#sdk-cross-toolchain-management) documentation
 for additional info.
 <!-- endnote -->
 
@@ -123,20 +123,20 @@ wget http://iot.bzh/download/public/XDS/appliance/xds-vm-debian9_latest.ova
 
 You must have one and one xds appliance only.
 
-So, at first remove the oldest xds appliance.
+So, first remove the oldest xds appliance if needed.
 
 ```bash
-#Get the virtual machine name
+# Get the virtual machine name
 VDS_VMNAME=$(VBoxManage list vms | grep xds-vm-debian | cut -d "\"" -f2)
 echo ${VDS_VMNAME}
 
-#Remove old XDS appliance
+# Remove old XDS appliance
 [ -n ${VDS_VMNAME} ] && VBoxManage unregistervm ${VDS_VMNAME} --delete
 ```
 
 ### Create and start a new appliance
 
-Use provided script to create a new appliance or you can use the UI of VirtualBox:
+Used provided script to create a new appliance or you can use VirtualBox GUI:
 
 ```bash
 # Import image into VirtualBox
@@ -152,7 +152,7 @@ echo ${VDS_VMNAME}
 
 ### Appliance settings
 
-This container (ID=0) exposes following ports:
+This image exposes following network ports (NAT mode):
 
 - 8000 : `xds-server` to serve XDS basic web page
 - 69   : TFTP
@@ -167,7 +167,7 @@ To check if xds-server is correctly install and running, you can access the basi
 ```bash
 # if container/appliance is running on your local host
 # (else replace localhost by the name or the ip of the machine running the container)
-seb@laptop ~$ xdg-open http://localhost:8000
+xdg-open http://localhost:8000
 ```
 
 `xds-server` is now up and running, you can now install AGL SDKs, please refer
@@ -183,27 +183,27 @@ installation !
 
 ```bash
 # 'DISTRO' can be set to { xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04, Debian_8.0, Debian_9.0}
-seb@laptop ~$  export DISTRO="xUbuntu_16.04"
+export DISTRO="xUbuntu_16.04"
 
-seb@laptop ~$  wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
-seb@laptop ~$  sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list <<EOF
+wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
+sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list <<EOF
 deb http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/ ./
 EOF"
 
-seb@laptop ~$  sudo apt-get update
-seb@laptop ~$  sudo apt-get install agl-xds-server
+sudo apt-get update
+sudo apt-get install agl-xds-server
 ```
 
 ### Install packages for openSUSE distro type
 
 ```bash
 # DISTRO can be set to {openSUSE_Leap_42.2, openSUSE_Leap_42.3, openSUSE_Tumbleweed}
-seb@laptop ~$  export DISTRO="openSUSE_Leap_42.2"
+export DISTRO="openSUSE_Leap_42.2"
 
-seb@laptop ~$  sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
+sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
 
-seb@laptop ~$  sudo zypper ref
-seb@laptop ~$  sudo zypper install agl-xds-server
+sudo zypper ref
+sudo zypper install agl-xds-server
 ```
 
 ### Configure xds-server
@@ -261,27 +261,27 @@ All fields are optional and example below corresponds to the default values:
 
 ```bash
 # Status XDS server:
-seb@laptop ~$ systemctl --user status xds-server.service
+systemctl --user status xds-server.service
 
 # Stop XDS server
-seb@laptop ~$ systemctl --user stop xds-server.service
+systemctl --user stop xds-server.service
 
 # Start XDS server
-seb@laptop ~$ systemctl --user start xds-server.service
+systemctl --user start xds-server.service
 
 # Get XDS server logs
-seb@laptop ~$ systemctl --user --unit=xds-server.service --output=cat
+systemctl --user --unit=xds-server.service --output=cat
 ```
 
 To check if xds-server is correctly install and running, you can access the web
 interface, using a web browser :
 
 ```bash
-seb@laptop ~$ xdg-open http://localhost:8000
+xdg-open http://localhost:8000
 ```
 
 or get the current version using the following curl command:
 
 ```bash
-seb@laptop ~$ curl http://localhost:8000/api/v1/version
+curl http://localhost:8000/api/v1/version
 ```

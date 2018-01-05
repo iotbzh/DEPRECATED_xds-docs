@@ -25,31 +25,31 @@ optional and depends of what you want to do :
 
 ```bash
 # 'DISTRO' can be set to { xUbuntu_16.04, xUbuntu_16.10, xUbuntu_17.04, Debian_8.0, Debian_9.0 }
-seb@laptop ~$  export DISTRO="xUbuntu_16.04"
+export DISTRO="xUbuntu_16.04"
 
-seb@laptop ~$  wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
-seb@laptop ~$  sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list <<EOF
+wget -O - http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/Release.key | sudo apt-key add -
+sudo bash -c "cat >> /etc/apt/sources.list.d/AGL.list <<EOF
 deb http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/ ./
 EOF"
 
-seb@laptop ~$  sudo apt-get update
-seb@laptop ~$  sudo apt-get install agl-xds-agent
-seb@laptop ~$  sudo apt-get install agl-xds-cli
-seb@laptop ~$  sudo apt-get install agl-xds-gdb
+sudo apt-get update
+sudo apt-get install agl-xds-agent
+sudo apt-get install agl-xds-cli
+sudo apt-get install agl-xds-gdb
 ```
 
 ## Install packages for openSUSE distro type
 
 ```bash
 # DISTRO can be set to {openSUSE_Leap_42.2, openSUSE_Leap_42.3, openSUSE_Tumbleweed}
-seb@laptop ~$  export DISTRO="openSUSE_Leap_42.2"
+export DISTRO="openSUSE_Leap_42.2"
 
-seb@laptop ~$  sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
+sudo zypper ar http://download.opensuse.org/repositories/isv:/LinuxAutomotive:/app-Development/${DISTRO}/isv:LinuxAutomotive:app-Development.repo
 
-seb@laptop ~$  sudo zypper ref
-seb@laptop ~$  sudo zypper install agl-xds-agent
-seb@laptop ~$  sudo zypper install agl-xds-cli
-seb@laptop ~$  sudo zypper install agl-xds-gdb
+sudo zypper ref
+sudo zypper install agl-xds-agent
+sudo zypper install agl-xds-cli
+sudo zypper install agl-xds-gdb
 ```
 
 ## Install for other platforms (Windows / MacOS)
@@ -81,11 +81,11 @@ immediately using following commands:
 
 ```bash
 # Enable xds-agent service at boot
-seb@laptop ~$  systemctl --user enable xds-agent.service
+systemctl --user enable xds-agent.service
 
 # Manually start xds-agent service
-seb@laptop ~$  systemctl --user start xds-agent.service
+systemctl --user start xds-agent.service
 
 # Get status and log of xds-agent service
-seb@laptop ~$  systemctl --user status xds-agent.service
+systemctl --user status xds-agent.service
 ```
